@@ -26,6 +26,7 @@
                                 <td>{{ $faq->question }}</td>
                                 <td>{{ $faq->answer }}</td>
                                 <td>
+                                    <a href="{{ route('admin.faq.edit', $faq->id) }}" class="btn btn-sm btn-info">Edit</a>
                                 </td>
                             </tr>
                             @endforeach

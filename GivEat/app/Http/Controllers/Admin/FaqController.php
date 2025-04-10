@@ -30,4 +30,19 @@ class FaqController extends Controller
         return redirect()->route('admin.faq.index')->with('success', 'FAQ created successfully');
     }
 
+    public function edit(Faq $faq)
+    {
+        return view('admin.faq.edit', compact('faq'));
+    }
+
+    public function update(Request $request, Faq $faq)
+    {
+        $request->validate([
+            'question' => 'required',
+            'answer' => 'required'
+        ]);
+
+        $faq->update($request->all());
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ updated successfully');
+    }
 }
