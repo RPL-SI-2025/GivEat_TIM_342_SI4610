@@ -45,4 +45,10 @@ class FaqController extends Controller
         $faq->update($request->all());
         return redirect()->route('admin.faq.index')->with('success', 'FAQ updated successfully');
     }
+
+    public function destroy(Faq $faq)
+    {
+        $faq->delete();
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ deleted successfully');
+    }
 }
