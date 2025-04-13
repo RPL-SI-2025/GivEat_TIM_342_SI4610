@@ -14,7 +14,7 @@
         <div>
             <label class="block font-semibold">Gambar</label>
             <input type="file" name="gambar" class="w-full border rounded px-3 py-2">
-            <img src="{{ asset('storage/' . $berita->gambar) }}" class="w-32 mt-2">
+            <img src="{{ asset('images/' . $berita->gambar) }}" alt="{{ $berita->judul }}" class="w-full h-48 object-cover">
         </div>
         <div>
             <label class="block font-semibold">Ringkasan</label>
