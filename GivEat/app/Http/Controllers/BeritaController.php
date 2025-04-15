@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
-    {
+{
     public function index(Request $request)
     {
         $page = $request->get('page', 1); 
@@ -25,47 +25,49 @@ class BeritaController extends Controller
         return view('berita.index', compact('beritaTerbaru', 'beritaLainnya'));
     }
 
-
-
     public function show(Berita $berita)
-        {
-            return view('berita.show', compact('berita'));
-        }
+    {
+        $rekomendasiBerita = Berita::where('id', '!=', $berita->id)
+                                ->latest()
+                                ->take(10)
+                                ->get();
 
-        public function adminIndex()
-        {
-            $beritas = Berita::latest()->get(); 
-            return view('admin.berita.index', compact('beritas'));
-        }
+        return view('berita.show', compact('berita', 'rekomendasiBerita'));
+    }
 
-        public function create()
-        {
-            return view('admin.berita.create');
-        }
+    public function adminIndex()
+    {
+        $beritas = Berita::latest()->get(); 
+        return view('admin.berita.index', compact('beritas'));
+    }
 
-        public function store(Request $request)
-        {
-            $request->validate([
-                'judul' => 'required|string|max:255',
-                'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
-                'ringkasan' => 'required|string',
-                'isi' => 'required|string',
-            ]);
+    public function create()
+    {
+        return view('admin.berita.create');
+    }
 
-            $file = $request->file('gambar');
-            $filename = time() . '_' . $file->getClientOriginalName();
-            $file->move(public_path('images'), $filename);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'judul' => 'required|string|max:255',
+            'gambar' => 'required|image|mimes:jpg,jpeg,png|max:2048',
+            'ringkasan' => 'required|string',
+            'isi' => 'required|string',
+        ]);
 
-            Berita::create([
-                'judul' => $request->judul,
-                'gambar' => $filename, 
-                'ringkasan' => $request->ringkasan,
-                'isi' => $request->isi,
-            ]);
+        $file = $request->file('gambar');
+        $filename = time() . '_' . $file->getClientOriginalName();
+        $file->move(public_path('images'), $filename);
 
-            return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan');
-        }
+        Berita::create([
+            'judul' => $request->judul,
+            'gambar' => $filename, 
+            'ringkasan' => $request->ringkasan,
+            'isi' => $request->isi,
+        ]);
 
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan');
+    }
 
     public function edit(Berita $berita)
     {
@@ -84,7 +86,6 @@ class BeritaController extends Controller
         $data = $request->only(['judul', 'ringkasan', 'isi']);
 
         if ($request->hasFile('gambar')) {
-            // Hapus file lama
             $oldPath = public_path('images/' . $berita->gambar);
             if (file_exists($oldPath)) {
                 unlink($oldPath);
@@ -100,7 +101,6 @@ class BeritaController extends Controller
 
         return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui');
     }
-
 
     public function destroy(Berita $berita)
     {

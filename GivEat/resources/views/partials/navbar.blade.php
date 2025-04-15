@@ -1,4 +1,4 @@
-<nav class="bg-green-700 text-white shadow-md">
+<nav class="bg-green-700 text-white shadow-md sticky top-0 z-50 shadow">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16 items-center">
             <div class="flex items-center space-x-4">

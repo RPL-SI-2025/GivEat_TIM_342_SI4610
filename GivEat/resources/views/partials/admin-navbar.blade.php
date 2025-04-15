@@ -1,4 +1,4 @@
-<nav class="bg-gray-800 text-white px-4 py-3">
+<nav class="bg-gray-800 text-white px-4 py-3 sticky top-0 z-50 shadow">
     <div class="container mx-auto flex justify-between items-center">
         <a href="{{ route('admin.berita.index') }}" class="font-bold text-lg">Admin Panel</a>
         <ul class="flex space-x-4">

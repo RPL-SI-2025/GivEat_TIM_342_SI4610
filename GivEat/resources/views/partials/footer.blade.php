@@ -1,4 +1,4 @@
-<footer class="bg-green-800 text-white py-4 mt-8">
+<footer class="bg-green-800 text-white py-4 mt-8 ">
     <div class="container mx-auto text-center text-sm">
         © {{ date('Y') }} <strong>GivEat Food Cycle</strong>. All rights reserved.
         <br>
