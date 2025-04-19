@@ -96,17 +96,24 @@
                 <a href="#" class="text-green-600 text-sm">Lihat Selengkapnya</a>
             </div>
             <div class="grid grid-cols-3 gap-4 mb-10">
-                @for($i = 0; $i < 3; $i++)
-                <div class="bg-white p-5 rounded-xl shadow-md">
-                    <p class="text-8xl text-green-600 leading-none">“</p>
-                    <p class="text-sm mb-4">GivEat membuat berbagi makanan jadi lebih mudah dan bermakna! Saya bisa mendonasikan makanan berlebih hanya dengan beberapa klik, dan saya merasa tenang karena makanan saya sampai ke tangan yang benar-benar membutuhkan</p>
-                    <div class="flex items-center mt-4">
-                        <img src="{{ asset('assets/img/Hailey-Williams.jpg') }}" alt="Profil" class="w-8 h-8 rounded-full">
-                        <span class="text-sm font-medium ml-2">Hailey Williams</span>
+                @forelse($reviews as $review)
+                    <div class="bg-white p-5 rounded-xl shadow-md">
+                        <p class="text-8xl text-green-600 leading-none">“</p>
+                        <p class="text-sm mb-4">{{ $review->pesan }}</p>
+                        <div class="flex items-center mt-4">
+                            @if($review->foto)
+                                <img src="{{ asset('storage/' . $review->foto) }}" alt="Profil" class="w-8 h-8 rounded-full">
+                            @else
+                                <img src="{{ asset('assets/img/default-avatar.png') }}" alt="Default" class="w-8 h-8 rounded-full">
+                            @endif
+                            <span class="text-sm font-medium ml-2">{{ $review->nama }}</span>
+                        </div>
                     </div>
-                </div>
-                @endfor
+                @empty
+                    <p class="text-gray-600 col-span-3">Belum ada review.</p>
+                @endforelse
             </div>
+
 
             <!-- Terakhir Dipesan -->
             <h3 class="text-lg font-semibold mb-4">Terakhir Dipesan</h3>
