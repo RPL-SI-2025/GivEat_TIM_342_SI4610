@@ -9,6 +9,11 @@
                     <h5 class="mb-0 text-white">Create New FAQ</h5>
                 </div>
                 <div class="card-body">
+
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
                     <form action="{{ route('admin.faq.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
@@ -16,6 +21,9 @@
                             <input 
                                 type="text" 
                                 name="question" 
+                                id="question"
+                                dusk="question"
+                                required
                                 class="form-control @error('question') is-invalid @enderror" 
                                 value="{{ old('question') }}" 
                                 placeholder="Enter the question...">
@@ -28,6 +36,9 @@
                             <label for="answer" class="form-label fw-semibold">Answer</label>
                             <textarea 
                                 name="answer" 
+                                id="answer"
+                                dusk="answer"
+                                required
                                 class="form-control @error('answer') is-invalid @enderror" 
                                 rows="4" 
                                 placeholder="Enter the answer...">{{ old('answer') }}</textarea>
@@ -38,7 +49,7 @@
 
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.faq.index') }}" class="btn btn-outline-secondary">Cancel</a>
-                            <button type="submit" class="btn text-white" style="background-color: #146C43;">Submit</button>
+                            <button type="submit" id="submit-faq" dusk="submit-faq" class="btn text-white" style="background-color: #146C43;">Submit</button>
                         </div>
                     </form>
                 </div>

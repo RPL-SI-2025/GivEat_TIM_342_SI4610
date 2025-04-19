@@ -9,15 +9,23 @@
                     <h5 class="mb-0 text-white">Edit FAQ</h5>
                 </div>
                 <div class="card-body">
+
+                    @if (session('success'))
+                        <div class="alert alert-success">{{ session('success') }}</div>
+                    @endif
+
                     <form action="{{ route('admin.faq.update', $faq->id) }}" method="POST">
                         @csrf
                         @method('PUT')
-
+                    
                         <div class="mb-3">
                             <label for="question" class="form-label fw-semibold">Question</label>
                             <input 
                                 type="text" 
                                 name="question" 
+                                id="question"
+                                dusk="question"
+                                required
                                 class="form-control @error('question') is-invalid @enderror" 
                                 value="{{ old('question', $faq->question) }}" 
                                 placeholder="Update the question...">
@@ -25,11 +33,14 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
+                    
                         <div class="mb-3">
                             <label for="answer" class="form-label fw-semibold">Answer</label>
                             <textarea 
                                 name="answer" 
+                                id="answer"
+                                dusk="answer"
+                                required
                                 class="form-control @error('answer') is-invalid @enderror" 
                                 rows="4" 
                                 placeholder="Update the answer...">{{ old('answer', $faq->answer) }}</textarea>
@@ -37,12 +48,12 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
-
+                    
                         <div class="d-flex justify-content-between">
                             <a href="{{ route('admin.faq.index') }}" class="btn btn-outline-secondary">Cancel</a>
-                            <button type="submit" class="btn text-white" style="background-color: #146C43;">Update</button>
+                            <button type="submit" id="update-faq" dusk="update-faq" class="btn text-white" style="background-color: #146C43;">Update</button>
                         </div>
-                    </form>
+                    </form>                    
                 </div>
             </div>
         </div>
