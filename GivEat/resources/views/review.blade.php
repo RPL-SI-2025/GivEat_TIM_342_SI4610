@@ -16,12 +16,24 @@
     <div class="flex min-h-screen">
         <!-- Sidebar -->
         <aside class="w-64 bg-white shadow-md px-6 py-8">
-            <h1 class="text-2xl font-bold text-green-700 mb-10">GivEat</h1>
+            <img src="{{ asset('assets/img/GivEat-Logo.png') }}" alt="GivEat Logo" class="w-42 mb-10">
             <nav class="space-y-4">
-                <a href="#" class="block text-lg font-medium text-gray-700 hover:text-green-600">Beranda</a>
-                <a href="#" class="block text-lg font-medium text-gray-700 hover:text-green-600">Donasi</a>
-                <a href="#" class="block text-lg font-medium text-green-600">Review</a>
-                <a href="#" class="block text-lg font-medium text-gray-700 hover:text-green-600">Riwayat</a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-green-600 text-gray-700">
+                    <img src="{{ asset('assets/img/Beranda.png') }}" alt="Beranda" class="w-6 h-6">
+                    <span class="text-lg font-medium">Beranda</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-green-600 text-gray-700">
+                    <img src="{{ asset('assets/img/Donasi.png') }}" alt="Donasi" class="w-6 h-6" fill="black">
+                    <span class="text-lg font-medium">Donasi</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-green-600 text-gray-700">
+                    <img src="{{ asset('assets/img/Review.png') }}" alt="Review" class="w-6 h-6">
+                    <span class="text-lg font-medium">Review</span>
+                </a>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg hover:bg-gray-100 hover:text-green-600 text-gray-700">
+                    <img src="{{ asset('assets/img/Riwayat.png') }}" alt="Riwayat" class="w-6 h-6">
+                    <span class="text-lg font-medium">Riwayat</span>
+                </a>
             </nav>
         </aside>
 
@@ -34,28 +46,49 @@
                 </div>
                 <div class="flex items-center space-x-2">
                     <span class="font-semibold">Robert Julian</span>
-                    <img src="https://via.placeholder.com/40" alt="profile" class="rounded-full w-10 h-10">
+                    <img src="{{ asset('assets/img/Robert-Julian.png') }}" alt="Profil" class="w-8 h-8 rounded-full">
                 </div>
             </div>
 
             <!-- Stats -->
             <div class="grid grid-cols-3 gap-6 mb-8">
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <p class="text-2xl font-bold">9812</p>
-                    <p class="text-sm text-gray-500">Makanan Terdistribusi</p>
+            <!-- Card 1: Makanan Terdistribusi -->
+            <div class="bg-white p-6 rounded-xl shadow-md flex justify-between items-center">
+                <div>
+                    <p class="text-3xl font-bold">9812</p>
+                    <p class="text-base text-black">Makanan Terdistribusi</p>
                     <p class="text-green-500 text-sm mt-1">↑ 50 kali lebih banyak minggu ini</p>
                 </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <p class="text-2xl font-bold">1000</p>
-                    <p class="text-sm text-gray-500">Penerima Makanan</p>
-                    <p class="text-green-500 text-sm mt-1">↑ 50 kali lebih banyak minggu ini</p>
-                </div>
-                <div class="bg-white p-6 rounded-xl shadow-md">
-                    <p class="text-2xl font-bold">4591</p>
-                    <p class="text-sm text-gray-500">Kg Makanan Terselamatkan</p>
-                    <p class="text-green-500 text-sm mt-1">↑ 50 kali lebih banyak minggu ini</p>
+                <div class="bg-gray-100 rounded-full p-4">
+                    <img src="{{ asset('assets/img/FamiconsFastFood.png') }}" alt="Profil" class="w-10 h-auto">
                 </div>
             </div>
+
+            <!-- Card 2: Penerima Makanan -->
+            <div class="bg-white p-6 rounded-xl shadow-md flex justify-between items-center">
+                <div>
+                    <p class="text-3xl font-bold">1000</p>
+                    <p class="text-base text-black">Penerima Makanan</p>
+                    <p class="text-green-500 text-sm mt-1">↑ 50 kali lebih banyak minggu ini</p>
+                </div>
+                <div class="bg-gray-100 rounded-full p-4">
+                    <img src="{{ asset('assets/img/People.png') }}" alt="Profil" class="w-10 h-auto">
+                </div>
+            </div>
+
+            <!-- Card 3: Kg Makanan Terselamatkan -->
+            <div class="bg-white p-6 rounded-xl shadow-md flex justify-between items-center">
+                <div>
+                    <p class="text-3xl font-bold">4591</p>
+                    <p class="text-base text-black">Kg Makanan Terselamatkan</p>
+                    <p class="text-green-500 text-sm mt-1">↑ 50 kali lebih banyak minggu ini</p>
+                </div>
+                <div class="bg-gray-100 rounded-full p-4">
+                    <img src="{{ asset('assets/img/FoodTurkey.png') }}" alt="Profil" class="w-10 h-auto">
+                </div>
+            </div>
+        </div>
+
 
             <!-- Review Section -->
             <div class="flex justify-between items-center mb-4">
@@ -65,11 +98,11 @@
             <div class="grid grid-cols-3 gap-4 mb-10">
                 @for($i = 0; $i < 3; $i++)
                 <div class="bg-white p-5 rounded-xl shadow-md">
-                    <p class="text-4xl text-green-600 leading-none mb-3">“</p>
+                    <p class="text-8xl text-green-600 leading-none">“</p>
                     <p class="text-sm mb-4">GivEat membuat berbagi makanan jadi lebih mudah dan bermakna! Saya bisa mendonasikan makanan berlebih hanya dengan beberapa klik, dan saya merasa tenang karena makanan saya sampai ke tangan yang benar-benar membutuhkan</p>
                     <div class="flex items-center mt-4">
-                        <img src="https://via.placeholder.com/32" class="rounded-full mr-3" alt="user">
-                        <span class="text-sm font-medium">Hailey Williams</span>
+                        <img src="{{ asset('assets/img/Hailey-Williams.jpg') }}" alt="Profil" class="w-8 h-8 rounded-full">
+                        <span class="text-sm font-medium ml-2">Hailey Williams</span>
                     </div>
                 </div>
                 @endfor
@@ -79,21 +112,21 @@
             <h3 class="text-lg font-semibold mb-4">Terakhir Dipesan</h3>
             <div class="grid grid-cols-3 gap-6">
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <img src="https://via.placeholder.com/300x150" class="w-full h-32 object-cover" alt="Nasi Liwet">
+                    <img src="{{ asset('assets/img/Nasi-Liwet-Sunda.jpg') }}" class="w-full h-32 object-cover" alt="Nasi Liwet">
                     <div class="p-4">
                         <h4 class="font-semibold">Nasi Liwet</h4>
                         <p class="text-sm text-gray-600">🍽️ 10 Porsi &nbsp; 👥 5 Penerima</p>
                     </div>
                 </div>
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <img src="https://via.placeholder.com/300x150" class="w-full h-32 object-cover" alt="Ayam Goreng">
+                    <img src="{{ asset('assets/img/Ayam-Goreng.jpg') }}" class="w-full h-32 object-cover" alt="Ayam Goreng">
                     <div class="p-4">
                         <h4 class="font-semibold">Ayam Goreng</h4>
                         <p class="text-sm text-gray-600">🍽️ 10 Porsi &nbsp; 👥 8 Penerima</p>
                     </div>
                 </div>
                 <div class="bg-white rounded-xl shadow-md overflow-hidden">
-                    <img src="https://via.placeholder.com/300x150" class="w-full h-32 object-cover" alt="Kwetiau Goreng">
+                    <img src="{{ asset('assets/img/Kwetiau-Goreng.jpg') }}" class="w-full h-32 object-cover" alt="Kwetiau Goreng">
                     <div class="p-4">
                         <h4 class="font-semibold">Kwetiau Goreng</h4>
                         <p class="text-sm text-gray-600">🍽️ 10 Porsi &nbsp; 👥 4 Penerima</p>
