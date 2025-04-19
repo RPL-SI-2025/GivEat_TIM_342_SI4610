@@ -1,660 +1,150 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Giveat - Siap Makan Hari Ini</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        /* Reset & base */
-        * {
-            margin: 2;
-            padding: 2;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #ffffff;
-        }
-
-        /* Header */
-        header {
-            background-color: #ffffff;
-            padding: 16px 24px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        header .logo img {
-            height: 40px;
-        }
-
-        header nav a {
-            margin-left: 24px;
-            text-decoration: none;
-            color: #333;
-            font-weight: 500;
-        }
-
-        header nav a.active {
-            color: #28a745;
-        }
-
-        header .user-profile {
-            display: flex;
-            align-items: center;
-        }
-
-        header .user-profile img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-left: 16px;
-        }
-
-        /* Banner */
-        .banner-container {
-            width: 100%;
-            max-width: 1200px; /* sesuaikan dengan layout */
-            margin: 24px auto; /* jarak atas bawah + center */
-        }
-
-        .banner-image {
-            width: 100%;
-            height: auto;
-            display: block; /* hilangkan spasi bawah gambar */
-            border-radius: 12px; /* opsional, agar sudut membulat */
-            object-fit: cover;
-        }
-
-        /* Top Restaurants */
-        .top-restaurants {
-            margin: 24px;
-            padding: 16px;
-            background-color: #ffffff;
-            border-radius: 8px;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .top-restaurants h2 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            align-self: flex-start;
-        }
-
-        .top-restaurants .scroll-container {
-            display: flex;
-            gap: 16px;
-            overflow-x: auto;
-            padding-bottom: 16px;
-        }
-
-        .top-restaurants .scroll-container::-webkit-scrollbar {
-            display: none;
-        }
-
-        .top-restaurants .restaurant-btn img {
-            width: 100%;
-            height: 100%;
-            object-fit: contain;
-        }
-
-        .top-restaurants .view-more {
-            align-self: flex-end;
-            font-size: 14px;
-            font-weight: 500;
-            color: #28a745;
-            text-decoration: none;
-        }
-
-        /* Siap Makan Hari Ini */
-        .siap-makan {
-            margin: 24px;
-            padding: 16px;
-            background-color: #ffffff;
-            border-radius: 8px;
-        }
-
-        .siap-makan h2 {
-            font-size: 20px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-
-        .siap-makan .grid-foods {
-            display: grid;
-            grid-template-columns: repeat(4, minmax(180px, 1fr));
-            gap: 16px;
-        }
-
-        .siap-makan .food-card {
-            background-color: #ffffff;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            padding: 16px;
-            position: relative;
-        }
-
-        .siap-makan .food-card img {
-            width: 100%;
-            height: auto;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .siap-makan .food-card .label-red-small {
-            position: absolute;
-            top: 8px;
-            left: 8px;
-            background-color: red;
-            color: #ffffff;
-            border-radius: 4px;
-            padding: 4px 8px;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .siap-makan .food-card .food-name {
-            font-size: 16px;
-            font-weight: 600;
-            margin-top: 8px;
-            margin-bottom: 4px;
-        }
-
-        .siap-makan .food-card .small-text-muted {
-            color: #888888;
-            font-size: 12px;
-        }
-
-        .siap-makan .food-card .card-footer-info {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-top: 8px;
-        }
-
-        .siap-makan .food-card .card-footer-info .icon-text {
-            font-size: 12px;
-            color: #666666;
-        }
-
-        .siap-makan .food-card .card-footer-info svg {
-            fill: none;
-            stroke: #666666;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-        }
-
-        .siap-makan .food-card .card-footer-info .time-icon svg {
-            width: 18px;
-            height: 18px;
-            margin-right: 6px;
-        }
-
-        .siap-makan .food-card .card-footer-info .portion-icon svg {
-            width: 18px;
-            height: 18px;
-            margin-right: 6px;
-        }
-
-        .siap-makan .food-card:hover {
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Berita */
-        .news-section {
-  max-width: 1200px;
-  margin: 40px auto;
-}
-
-.news-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.news-header h2 {
-  font-size: 24px;
-}
-
-.see-more {
-  font-size:14px;
-  color:#666666;
- text-decoration:none; 
-}
-
-.see-more:hover {
-   text-decoration : underline ;
-}
-
-/* Container untuk kartu berita */
-.news-cards-container {
-   display:flex; 
-   gap :20 px ; 
-   overflow-x:auto; /* scroll horizontal jika perlu */
-   padding-top :20 px ;
-}
-
-/* Kartu Berita */
-.news-card {
- position : relative ;
- width :400 px ; /* sesuaikan ukuran */
- height :200 px ;
- border-radius :12 px ;
- background-size : cover ;
- background-position:center center ;
- color:white;
-
- flex-shrink :
-
-0 ;
-
- cursor:pointer;
-
- display:flex;
-
- align-items:center;
-
- padding-left:
-
-20 
-
-p x;
-
-
-box-shadow:
-
-
-rgba(0,0,0,.4) 
-
-o x o x 
-
-
-}
-
-
-/* Overlay gelap agar teks terbaca */
-
-.news-card .overlay {
-
-position:absolute;
-
-top:o;left:o;right:o;bottom:o;
-
-background-color:
-
-rgba(0,0,0,.5);
-
-border-radius:
-
-12 p x;
-
-
-z-index:-1;
-
-
-
-}
-
-
-
-/* Konten teks dan tombol */
-
-.news-card .content {
-
-position :
-
-relative ;
-
-max-width :
-
-70 % ;
-
-}
-
-
-
-.news-card h3 {
-
-font-weight:bold;font-size:
-
-18 p x;
-
-
-
-margin-bottom:
-
-
-10 p x;
-
-
-
-line-height:
-
-
-1.3em;
-
-
-}
-
-
-
-/* Tombol lihat selengkapnya */
-
-.btn-see-more {
-
-display:inline-block;padding:.
-
-5 em 
-
-1 em;background-color:#fff;color:#2f6c27;border-radius:.
-
-8 em;text-decoration:none;font-weight:bold;font-size:.
-
-85 rem;margin-top:.
-
-5 em;}
-
-.btn-see-more:hover{
-
-background-color:#28a745;color:white;}
-
-
-        /* Footer */
-        footer{
-background-color:#006633;color:white;padding:
-20
-px
-30
-px;width:
-100%;
-position:
-relative;
-/*
-Jika ingin footer selalu dibawah viewport, bisa pakai fixed atau sticky,
-tapi pastikan konten utama cukup tinggi.
-*/
-text-align:center;
-
-box-sizing:border-box;
-
-}
-
-.footer-container{
-
-max-width:
-
-1200
-
-px;margin:
-
-auto;
-
-
-display:flex;
-
-flex-wrap:
-
-wrap;
-
-justify-content:
-
-space-between;
-
-align-items:
-
-center;
-
-
-
-gap:
-
-
-10
-
-
-px;
-
-
-}
-
-
-
-.footer-logo img{
-
-height:
-
-
-40
-
-
-px;
-
-
-
-}
-
-
-
-.footer-nav a{
-
-color:
-
-
-white;
-
-
-text-decoration:
-
-
-none;
-
-
-
-margin-left:
-
-
-10
-
-
-px;
-
-
-
-margin-right:
-
-
-10
-
-
-px;
-
-
-
-font-size:
-
-
-14
-
-
-pt;
-
-
-
-
-}
-
-
-
-.footer-nav a:hover{
-
-text-decoration:
-
-
-
-underline;
-
-
-
-
-}
-
-
-@media (max-width
-
-
-
-768
-
-
-
-){
-
-.footer-container{
-
-
-flex-direction:
-
-
-
-column;
-
-
-gap:
-
-
-
-15
-
-
-
-pt;
-
-
-
-
-.text-center{
-
-
-text-align:center!important;}}
-
-
-}
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Giveat - Siap Makan Hari Ini</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
 
-<header>
-    <div class="logo">
-        <img src="{{ asset('images/logo1.png') }}" alt="GiveAt Logo" />
-    </div>
-    <nav>
-        <a href="#" class="active">Beranda</a>
-        <a href="#">Forum</a>
-        <a href="#">Berita</a>
-        <a href="#">Persebaran</a>
-        <a href="#">FAQ</a>
-    </nav>
-    <div class="user-profile">
-        <span>Hailey Williams</span>
-        <img src="{{ asset('images/user.png') }}" alt="User Profile" />
-    </div>
+<body class="bg-white font-sans">
+
+<!-- Header -->
+<header class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
+  <div class="logo">
+    <img src="{{ asset('images/logo1.png') }}" alt="GiveAt Logo" height="40" />
+  </div>
+  <nav>
+    <ul class="nav gap-4 mb-0">
+      <li><a href="#" class="nav-link active text-success fw-semibold">Beranda</a></li>
+      <li><a href="#" class="nav-link text-dark fw-semibold">Forum</a></li>
+      <li><a href="#" class="nav-link text-dark fw-semibold">Berita</a></li>
+      <li><a href="#" class="nav-link text-dark fw-semibold">Persebaran</a></li>
+      <li><a href="#" class="nav-link text-dark fw-semibold">FAQ</a></li>
+    </ul>
+  </nav>
+  <div class="d-flex align-items-center gap-2">
+    <span>Hailey Williams</span>
+    <img src="{{ asset('images/user.png') }}" alt="User Profile" width="40" height="40" style="border-radius:50%; object-fit:cover;" />
+  </div>
 </header>
 
-<main class="container">
+<main class="container my-4 max-w-screen-xl mx-auto">
 
-    <!-- Banner -->
-    <div class="banner-container">
-        <img src="{{ asset('images/banner/banner.png') }}" alt="Banner" class="banner-image" />
-    </div>
-
-    <!-- Top Restaurants -->
-    <div class="top-restaurants">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <h2>Top Restaurant</h2>
-            <a href="#" class="view-more">Lihat Selengkapnya</a>
-        </div>
-        <div class="scroll-container">
-            @foreach ($restaurants as $restaurant)
-                <div class="restaurant-btn">
-                    <img src="{{ asset('images/restaurants/' . $restaurant->logo) }}" alt="{{ $restaurant->name }}" />
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    <!-- Siap Makan Hari Ini -->
-    <div class="siap-makan">
-        <h2>Siap Makan Hari Ini</h2>
-        <a href="#" class="see-more">Lihat Selengkapnya</a>
-        <div class="grid-foods">
-            @foreach ($foods as $food)
-                <div class="food-card">
-                    @if ($loop->first)
-                        <div class="label-red-small">Tersisa 5</div>
-                    @endif
-                    <img src="{{ asset('images/foods/' . $food->image) }}" alt="{{ $food->name }}" />
-                    <div class="food-name">{{ $food->name }}</div>
-                    <div class="small-text-muted">{{ $food->portion }} porsi</div>
-                    <div class="card-footer-info">
-                        <div class="icon-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="time-icon">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
-                            </svg>
-                            {{ $food->preparation_time }} menit
-                        </div>
-                        <div class="icon-text">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="portion-icon">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <line x1="12" y1="8" x2="12" y2="12"></line>
-                                <line x1="12" y1="16" x2="12" y2="16"></line>
-                            </svg>
-                            {{ $food->portion }} porsi
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
-
-    <!-- Berita -->
-    <section class="news-section">
-  <div class="news-header">
-    <h2>Ada Apa Hari Ini</h2>
-    <a href="#" class="see-more">Lihat Selengkapnya</a>
+  <!-- Banner -->
+  <div class="mb-5 rounded-lg overflow-hidden">
+    <img src="{{ asset('images/banner/banner.png') }}" alt="Banner Promo" class="w-full h-auto object-cover rounded-lg" />
   </div>
 
-  <div class="news-cards-container">
-    <!-- Satu kartu berita -->
-    <img src="{{ asset('images/berita/berita.png') }}" alt="Berita" class="berita-image" />
-      </div>
-    </article>
+  <!-- Top Restaurant Section -->
+  <section aria-label="Top Restaurant">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fs-4 fw-bold m-0">Top Restaurant</h2>
+      <a href="#" class="link-success small text-decoration-none">Lihat Selengkapnya</a>
+    </div>
 
-    <!-- Tambah kartu lain jika perlu -->
+    <div class="d-flex gap-3 overflow-auto pb-md-2 scroll-container" style="scrollbar-width: none; -ms-overflow-style: none;">
+      @foreach ($restaurants as $restaurant)
+        <div style="min-width: 80px; min-height: 80px; border: 1px solid #ddd; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center;">
+          <img src="{{ asset('images/restaurants/' . $restaurant->logo) }}" alt="{{ $restaurant->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+        </div>
+      @endforeach
+    </div>
+  </section>
+
+  <!-- Siap Makan Hari Ini Section -->
+  <section aria-label="Siap Makan Hari Ini" class="mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2 class="fs-4 fw-bold m-0">Siap Makan Hari Ini</h2>
+      <a href="#" class="link-success small text-decoration-none">Lihat Selengkapnya</a>
+    </div>
+
+  <div class="row g-3">
+    @foreach ($foods as $food)
+      <div class="col-md-6 col-lg-3">
+        <div class="card h-100 position-relative">
+          
+          {{-- Tampilkan badge jika porsi <= 5 --}}
+          @if ($food->portion <= 5)
+            <span class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 rounded-end small fw-semibold">
+              Tersisa {{ $food->portion }}
+            </span>
+          @endif
+
+          {{-- Gambar Makanan --}}
+          <img 
+            src="{{ asset('images/foods/' . $food->image) }}" 
+            alt="{{ $food->name }}" 
+            class="card-img-top object-cover rounded-top" 
+            style="height: 180px; object-fit: cover;"
+            onerror="this.src='{{ asset('images/foods/') }}';"
+          />
+
+          <div class="card-body py-2">
+            <h6 class="card-title fw-bold">{{ $food->name }}</h6>
+            <p class="small text-muted mb-1">{{ Str::limit($food->description, 50, '...') }}</p>
+
+            <ul class="list-inline list-unstyled small text-muted mb-0 d-flex flex-wrap gap-2">
+              <li class="d-flex align-items-center gap-1" title="Porsi">
+                🍽️ {{ $food->portion }} Porsi
+              </li>
+              <li class="d-flex align-items-center gap-1" title="Waktu Persiapan">
+                ⏱️ {{ \Carbon\Carbon::parse($food->prepared_at)->diffForHumans() }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    @endforeach
   </div>
 </section>
 
+<!-- Ada Apa Hari Ini Section -->
+<section aria-label="Ada Apa Hari Ini" class="mt-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="fs-4 fw-bold m-0">Ada Apa Hari Ini</h2>
+  </div>
 
-</main>
-
-<footer>
-    <div class="footer-container">
-        <div class="footer-logo">
-            <img src="{{ asset('images/logo2.png') }}" alt="GiveAt Logo" />
-        </div>
-
-        <nav class="footer-nav">
-            <a href="#">Privacy Policy</a> | 
-            <a href="#">Hubungi Kami</a>
-        </nav>
-
-        <p>© 2025 GiveAt Food Cycle. All Rights Reserved.</p>
+  <div class="row g-3">
+    <div class="col-12">
+      <div class="card border-0 shadow-sm overflow-hidden">
+        <img src="{{ asset('images/berita/berita.png') }}" alt="Berita Hari Ini" class="w-100 h-auto object-cover" style="max-height: 300px;">
+      </div>
     </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer style="background-color: #14532d; color: white; padding: 16px 30px;">
+  <div style="max-width: 1200px; margin: auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
+    <!-- Logo -->
+    <div style="display:flex; align-items:center;">
+      <img src="{{ asset('images/logo2.png') }}" alt="GiveAt Logo" style="height:40px;" />
+      <span style="margin-left:10px;"></span>
+    </div>
+
+    <!-- Links -->
+    <nav>
+      <a href="#" style="color:white; margin-right:20px; text-decoration:none;">Privacy Policy</a>
+      <a href="#" style="color:white; text-decoration:none;">Hubungi Kami</a>
+    </nav>
+
+    <!-- Copyright -->
+    <div>© 2025 GiveAt Food Cycle. All Rights Reserved.</div>
+  </div>
 </footer>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  // Interaksi JS bisa ditambahkan di sini
+</script>
 
 </body>
 </html>
