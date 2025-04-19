@@ -1,61 +1,57 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="max-w-6xl mx-auto mt-10">
-    <div class="bg-white shadow-md rounded border border-gray-200">
-        <div class="flex items-center justify-between bg-green-700 text-white px-6 py-3 rounded-t">
-            <h2 class="text-lg font-semibold">Berita Management</h2>
-            <a href="{{ route('admin.berita.create') }}"
-               class="bg-white text-green-700 font-medium px-4 py-2 rounded hover:bg-gray-100 transition">
-                + Add Berita
-            </a>
+<div class="max-w-3xl mx-auto mt-10">
+    <div class="bg-white shadow rounded border border-gray-200">
+        <div class="bg-green-700 text-white text-lg font-semibold px-6 py-3 rounded-t">
+            Tambah Berita
         </div>
-        <div class="p-6 overflow-x-auto">
-            <table class="min-w-full table-auto">
-                <thead>
-                    <tr class="bg-gray-100 text-left text-sm font-medium text-gray-700">
-                        <th class="py-2 px-4 border-b">#</th>
-                        <th class="py-2 px-4 border-b">Judul</th>
-                        <th class="py-2 px-4 border-b">Ringkasan</th>
-                        <th class="py-2 px-4 border-b">Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($beritas as $index => $berita)
-                        <tr class="border-b text-sm text-gray-800">
-                            <td class="py-2 px-4">{{ $index + 1 }}</td>
-                            <td class="py-2 px-4">{{ $berita->judul }}</td>
-                            <td class="py-2 px-4">{{ Str::limit($berita->ringkasan, 100) }}</td>
-                            <td class="py-2 px-4 flex gap-2">
-                                <a href="{{ route('admin.berita.edit', $berita->id) }}"
-                                   class="bg-green-600 text-white px-3 py-1 rounded hover:bg-green-700 transition text-sm">
-                                    Edit
-                                </a>
-                                <form action="{{ route('admin.berita.destroy', $berita->id) }}" method="POST"
-                                      onsubmit="return confirm('Yakin ingin menghapus berita ini?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit"
-                                            class="bg-red-600 text-white px-3 py-1 rounded hover:bg-red-700 transition text-sm">
-                                        Delete
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                    @endforeach
+        <form action="{{ route('admin.berita.store') }}" method="POST" enctype="multipart/form-data" class="p-6 space-y-5">
+            @csrf
 
-                    @if($beritas->isEmpty())
-                        <tr>
-                            <td colspan="4" class="py-4 px-4 text-center text-gray-500">Tidak ada berita tersedia.</td>
-                        </tr>
-                    @endif
-                </tbody>
-            </table>
-
-            <div class="mt-4">
-                {{ $beritas->links() }}
+            {{-- Judul --}}
+            <div>
+                <label for="judul" class="block text-sm font-medium text-gray-700">Judul</label>
+                <input type="text" name="judul" id="judul"
+                       value="{{ old('judul') }}"
+                       class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm focus:ring-green-500 focus:border-green-500">
             </div>
-        </div>
+
+            {{-- Gambar --}}
+            <div>
+                <label for="gambar" class="block text-sm font-medium text-gray-700">Gambar</label>
+                <input type="file" name="gambar" id="gambar"
+                       class="mt-1 block w-full border border-gray-300 rounded-md text-sm text-gray-700 file:mr-4 file:py-2 file:px-4
+                       file:rounded-md file:border-0 file:text-sm file:font-semibold
+                       file:bg-green-600 file:text-white hover:file:bg-green-700" />
+            </div>
+
+            {{-- Ringkasan --}}
+            <div>
+                <label for="ringkasan" class="block text-sm font-medium text-gray-700">Ringkasan</label>
+                <textarea name="ringkasan" id="ringkasan" rows="3"
+                          class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm text-justify resize-y min-h-[200px] focus:ring-green-500 focus:border-green-500">{{ old('ringkasan') }}</textarea>
+            </div>
+
+            {{-- Isi --}}
+            <div>
+                <label for="isi" class="block text-sm font-medium text-gray-700">Isi</label>
+                <textarea name="isi" id="isi" rows="30"
+                          class="mt-1 block w-full rounded-md border border-gray-300 shadow-sm text-justify resize-y min-h-[200px] focus:ring-green-500 focus:border-green-500">{{ old('isi') }}</textarea>
+            </div>
+
+            {{-- Buttons --}}
+            <div class="flex justify-end gap-2">
+                <a href="{{ route('admin.berita.index') }}"
+                   class="px-4 py-2 bg-gray-200 text-gray-800 rounded-md hover:bg-gray-300 transition">
+                    Cancel
+                </a>
+                <button type="submit"
+                        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition">
+                    Tambah
+                </button>
+            </div>
+        </form>
     </div>
 </div>
 @endsection

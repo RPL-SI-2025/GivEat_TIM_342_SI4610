@@ -3,7 +3,9 @@
 use App\Http\Controllers\BeritaController;
 use Illuminate\Support\Facades\Route;
 
-// Halaman berita publik
+Route::get('/', [BeritaController::class, 'index'])->name('berita.index');
+
+
 Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');
 Route::get('/berita/{berita}', [BeritaController::class, 'show'])->name('berita.show');
 

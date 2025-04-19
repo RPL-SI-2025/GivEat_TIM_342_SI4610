@@ -12,12 +12,18 @@ class BeritaController extends Controller
     {
         $page = $request->get('page', 1); 
         $beritaTerbaru = null;
+        $beritaLainnya = collect(); // default kosong
 
         if ($page == 1) {
             $beritaTerbaru = Berita::latest()->first();
-            $beritaLainnya = Berita::where('id', '!=', $beritaTerbaru->id)
-                                ->latest()
-                                ->paginate(4);
+
+            if ($beritaTerbaru) {
+                $beritaLainnya = Berita::where('id', '!=', $beritaTerbaru->id)
+                    ->latest()
+                    ->paginate(4);
+            } else {
+                $beritaLainnya = Berita::latest()->paginate(4);
+            }
         } else {
             $beritaLainnya = Berita::latest()->skip(1)->paginate(4);
         }
