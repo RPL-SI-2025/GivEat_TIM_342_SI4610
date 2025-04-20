@@ -11,6 +11,9 @@ class Claim extends Model
 {
     use HasFactory;
 
+    protected $table = 'claims';
+    protected $primaryKey = 'id_claim';
+
     protected $fillable = [
         'recipient_id',
         'donation_id',

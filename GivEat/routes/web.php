@@ -1,15 +1,20 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DonationController;
 use App\Http\Controllers\ClaimController;
+use App\Http\Controllers\DonationController;
+use App\Http\Controllers\SiteController;
+use Illuminate\Support\Facades\Route;
 
-// Route::get('/klaim-makanan', function () {
-//     return view('klaimmakanan');
+Route::controller(SiteController::class)->group(function () {
+    Route::get('/', 'index')->name('home');
+});
 
-// });
-Route::get('/donations', [DonationController::class, 'index'])->name('donations.index');
-Route::get('/donations/{id}', [DonationController::class, 'show'])->name('donations.show');
+Route::controller(DonationController::class)->group(function () {
+    Route::get('/donations/{donation}', 'show')->name('donation.show'); // TODO : pakai middleware kalau sudah ada login
+});
 
-Route::resource('/claims', ClaimController::class);
-// Route::post('/claims-alsdijalsjid', [ClaimController::class, 'namafunction']);
+Route::controller(ClaimController::class)->group(function () {
+    Route::post('/claim/{donation}', 'store')->name('claim.store'); // TODO : pakai middleware kalau sudah ada login
+    Route::get('/claim/success/{slug}', 'success')->name('claim.success'); // TODO : pakai middleware kalau sudah ada login
+    Route::delete('/claim/{donation}/cancel', 'cancel')->name('claim.cancel'); // TODO : pakai middleware kalau sudah ada login
+});

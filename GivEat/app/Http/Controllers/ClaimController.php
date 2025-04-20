@@ -8,6 +8,7 @@ use App\Models\Donation;
 use App\Models\Recipient;
 use Illuminate\Http\Request;
 use Auth;
+use Illuminate\Support\Facades\DB;
 
 class ClaimController extends Controller
 {
@@ -32,8 +33,9 @@ class ClaimController extends Controller
      */
     public function store(Request $request)
     {
-
         $input = $request->all();
+
+        DB::beginTransaction();
 
         // Buat klaim baru
         $claim = Claim::create([
@@ -41,6 +43,12 @@ class ClaimController extends Controller
             'donation_id' => $input['donation_id'],
             'claim_date' => date('Y-m-d H:i:s')
         ]);
+
+        $donation = Donation::where('id_donation', $input['donation_id'])->first();
+        $donation->quantity = $donation->quantity - 1;
+        $donation->save();
+        
+        DB::commit();
 
         // Ambil data klaim yang baru dibuat
         $created_claims = [
@@ -58,12 +66,16 @@ class ClaimController extends Controller
                 'donation' => [
                     'claim_date' => $claim->claim_date,
                     'booking_code' => $claim->Donation->booking_code ?? 'ABC12345',
+                    'food_name' => $claim->Donation->food_name ?? 'Makanan',
+                    'slug' => $claim->Donation->slug ?? 'default-slug',
                 ],
+                'donation_id' => $claim->donation_id,
             ],
         ]);
         session()->flash('show_modal', true);
         // Redirect kembali ke halaman klaim makanan
-        return redirect()->back()->with('success', 'Klaim berhasil!');
+        $slug = $claim->Donation->slug ?? 'default-slug'; 
+        return redirect()->route('claim.success', ['slug' => $slug])->with('success', 'Klaim berhasil!');
     }
 
     /**
@@ -96,5 +108,44 @@ class ClaimController extends Controller
     public function destroy(Claim $claim)
     {
         //
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function success(Claim $claim)
+    {
+        return view('claimsuccess');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function cancel(Donation $donation)
+    {
+        DB::beginTransaction();
+
+        try {
+            $claim = Claim::where('donation_id', $donation->id_donation)->first();
+            
+            if (!$claim) {
+                return redirect()->back()->with(['error' => 'Klaim tidak ditemukan!']);
+            }
+            
+            $claim->delete();
+            
+            $donation->quantity = $donation->quantity + 1;
+            $donation->save();
+            
+            DB::commit();
+
+            // Menggunakan flash data 'claimDeleted' untuk penanda bahwa klaim berhasil dihapus
+            return redirect()->back()->with(['success' => 'Klaim berhasil dibatalkan!', 'claimDeleted' => true]);
+        } catch (\Exception $e) {
+            dd($e);
+            DB::rollBack();
+
+            return redirect()->back()->with(['error' => 'Klaim gagal dibatalkan!']);
+        }
     }
 }

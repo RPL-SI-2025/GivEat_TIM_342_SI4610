@@ -15,6 +15,7 @@ class LocationSeeder extends Seeder
     {
         Location::create([
             'address' => 'Test Address',
+            'location_url' => 'https://maps.app.goo.gl/iDKgFx7JW1ppqdEB6',
         ]);
     }
 }

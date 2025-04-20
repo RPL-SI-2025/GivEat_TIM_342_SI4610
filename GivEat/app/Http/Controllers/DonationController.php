@@ -36,13 +36,9 @@ class DonationController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Donation $donation)
     {
-        $donation = Donation::where('id_donation', $id)->first();
-        session()->flush();
         return view('klaimmakanan', ['donation' => $donation]);
-
-
     }
 
     /**

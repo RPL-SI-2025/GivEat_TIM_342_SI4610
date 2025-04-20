@@ -355,7 +355,7 @@
                     <div class="info-box">
                         <div style="font-size: 24px;">📍</div>
                         <div>Lokasi <br>
-                            <a href="{{ $donation->location}}">
+                            <a target="_blank" href="{{ $donation->location?->location_url }}">
                                 <img src=" {{ asset('images\gmaps.png') }}" alt=" Maps">
                             </a>
                         </div>
@@ -364,7 +364,7 @@
                 <!-- Modal -->
                 <div id="modalCodeBooking" class="modal" style="display: none;">
                     <div class="modal-content" id="modalContent">
-                        <span class="close-button">&times;</span>
+                        <span class="close-button" id="closeModalBtn">&times;</span>
                         <h2>Bukti Pemesanan</h2>
                         <p><strong>Nama Pengguna:</strong> <span
                                 id="modalUser">{{ session('claim.recipient.name') }}</span></p>
@@ -380,33 +380,129 @@
                 </div>
 
                 <!-- Button -->
-                <form action="/claims" method="POST">
+                <form action="{{ route('claim.store', $donation) }}" method="POST" id="claimForm">
                     @csrf
                     <input type="text" name="donation_id" value="{{ $donation->id_donation }}" hidden>
                     <input type="text" name="donation" value="{{ $donation }}" hidden>
-                    <button class="ambil-button">Ambil Makananmu</button>
+                    <button class="ambil-button" id="ambilButton">Ambil Makananmu</button>
                 </form>
+
+                <!-- Button Setelah Klaim -->
+                <div id="afterClaimButtons" style="display: none;">
+                    <a href="#" id="lihatBuktiBtn" class="ambil-button" style="background-color: #DCFCE7; color: #15803D; text-decoration: none; display: block; text-align: center; margin-bottom: 10px; width: 100%; box-sizing: border-box;">Lihat Bukti Pemesanan</a>
+                    
+                    <form action="{{ route('claim.cancel', $donation->id_donation) }}" method="POST" style="display: block; width: 100%;">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="ambil-button" style="background-color: #FECACA; color: #DC2626; width: 100%; box-sizing: border-box; border: none;">Batalkan Pemesanan</button>
+                    </form>
+                </div>
 
                 <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    @if(session('show_modal'))
-                    const modal = document.getElementById('modalCodeBooking');
-                    modal.style.display = 'block';
+                    // Cek apakah ada notifikasi pembatalan klaim dari session
+                    @if(session('claimDeleted'))
+                        localStorage.removeItem('claimData');
+                        console.log('Data klaim berhasil dihapus dari localStorage');
+                        setTimeout(function() {
+                            alert('Klaim berhasil dibatalkan!');
+                        }, 500);
                     @endif
-
-                    document.querySelector('.close-button').addEventListener('click', function() {
-                        const modal = document.getElementById('modalCodeBooking');
-                        modal.style.display = 'none';
-                    });
-
+                
+                    // Setup modal close button
+                    const closeModalBtn = document.getElementById('closeModalBtn');
+                    const modal = document.getElementById('modalCodeBooking');
+                    
+                    if (closeModalBtn) {
+                        closeModalBtn.addEventListener('click', function() {
+                            modal.style.display = 'none';
+                        });
+                    }
+                    
+                    // Close modal when clicking outside
                     window.addEventListener('click', function(event) {
-                        const modal = document.getElementById('modalCodeBooking');
                         if (event.target === modal) {
                             modal.style.display = 'none';
                         }
                     });
+                    
+                    // Cek apakah sudah klaim dari localStorage
+                    const claimDataString = localStorage.getItem('claimData');
+                    if (claimDataString) {
+                        const claimData = JSON.parse(claimDataString);
+                        console.log("Data klaim ditemukan:", claimData);
+                        console.log("ID donation saat ini:", "{{ $donation->id_donation }}");
+                        // Cek apakah donation id sama dengan yang sedang dilihat
+                        if (claimData.donation_id === "{{ $donation->id_donation }}") {
+                            console.log("ID donation cocok, menampilkan tombol alternatif");
+                            // Tampilkan tombol setelah klaim
+                            document.getElementById('claimForm').style.display = 'none';
+                            document.getElementById('afterClaimButtons').style.display = 'block';
+                            
+                            // Set up event listener untuk tombol lihat bukti
+                            document.getElementById('lihatBuktiBtn').addEventListener('click', function(e) {
+                                e.preventDefault();
+                                modal.style.display = 'block';
+                            });
+                            
+                            // Set up event listener untuk tombol batalkan
+                            document.getElementById('batalkanBtn').addEventListener('click', function(e) {
+                                e.preventDefault();
+                                if (confirm('Apakah Anda yakin ingin membatalkan pemesanan?')) {
+                                    // Buat form untuk melakukan DELETE request
+                                    const form = document.createElement('form');
+                                    form.method = 'POST';
+                                    form.action = "{{ route('claim.cancel', $donation->id_donation) }}";
+                                    form.style.display = 'none';
+                                    
+                                    // Tambahkan method DELETE dan CSRF token
+                                    const methodInput = document.createElement('input');
+                                    methodInput.type = 'hidden';
+                                    methodInput.name = '_method';
+                                    methodInput.value = 'DELETE';
+                                    
+                                    const csrfInput = document.createElement('input');
+                                    csrfInput.type = 'hidden';
+                                    csrfInput.name = '_token';
+                                    csrfInput.value = "{{ csrf_token() }}";
+                                    
+                                    // Gabungkan semua elemen dan submit form
+                                    form.appendChild(methodInput);
+                                    form.appendChild(csrfInput);
+                                    document.body.appendChild(form);
+                                    form.submit();
+                                }
+                            });
+                        }
+                    }
+                    
+                    @if(session('show_modal'))
+                    modal.style.display = 'block';
+                    
+                    // Simpan data klaim ke localStorage
+                    // TODO : Ganti setelah authentication sudah ada
+                    const claimData = {
+                        recipient: {
+                            name: "{{ session('claim.recipient.name') }}",
+                            address: "{{ session('claim.recipient.address') }}"
+                        },
+                        donation: {
+                            claim_date: "{{ session('claim.donation.claim_date') }}",
+                            booking_code: "{{ session('claim.donation.booking_code') }}",
+                            food_name: "{{ $donation->food_name }}"
+                        },
+                        slug: "{{ $donation->slug ?? 'default-slug' }}",
+                        donation_id: "{{ $donation->id_donation }}"
+                    };
+                    
+                    localStorage.setItem('claimData', JSON.stringify(claimData));
+                    
+                    // Sembunyikan form klaim dan tampilkan tombol alternatif
+                    document.getElementById('claimForm').style.display = 'none';
+                    document.getElementById('afterClaimButtons').style.display = 'block';
+                    @endif
                 });
-
+                
                 // Cetak PDF dengan styling modern
                 document.getElementById('printButton').addEventListener('click', async function() {
                     const {
