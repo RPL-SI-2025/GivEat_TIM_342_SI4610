@@ -33,7 +33,7 @@ class FoodItemsTableSeeder extends Seeder
             'image' => 'sayur_asem.png',
             'portion' => 5,
             'prepared_at' => now()->subHours(3),
-            'restaurant_id' => 1,
+            'restaurant_id' => 3,
         ]);
 
         FoodItem::create([
@@ -42,7 +42,7 @@ class FoodItemsTableSeeder extends Seeder
             'image' => 'kwetiau_goreng.png',
             'portion' => 1,
             'prepared_at' => now()->subHours(4),
-            'restaurant_id' => 2,
+            'restaurant_id' => 4,
         ]);
 
         FoodItem::create([

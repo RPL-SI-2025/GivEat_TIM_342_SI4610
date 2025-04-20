@@ -1,0 +1,523 @@
+/* Reset & base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f5f5f5;
+}
+
+/* Header */
+header {
+    background-color: #ffffff;
+    padding: 16px 24px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+header .logo img {
+    height: 40px;
+}
+
+header nav a {
+    margin-left: 24px;
+    text-decoration: none;
+    color: #333;
+    font-weight: 500;
+}
+
+header nav a.active {
+    color: #28a745;
+}
+
+header .user-profile {
+    display: flex;
+    align-items: center;
+}
+
+header .user-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 16px;
+    object-fit: cover;
+}
+
+/* Banner */
+.banner-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+
+.banner-image {
+    width: 100%;
+    height: auto;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+/* Top Restaurants */
+.top-restaurants {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+}
+
+.top-restaurants .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.top-restaurants h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.top-restaurants .view-more {
+    font-size: 14px;
+    font-weight: 500;
+    color: #28a745;
+    text-decoration: none;
+}
+
+.top-restaurants .scroll-container-wrapper {
+    overflow: hidden;
+    position: relative;
+}
+
+.top-restaurants .scroll-container {
+    display: flex;
+    gap: 16px;
+    width: max-content;
+    animation: scroll 20s linear infinite;
+}
+
+.top-restaurants .scroll-container::-webkit-scrollbar {
+    display: none;
+}
+
+.top-restaurants .restaurant-btn {
+    min-width: 120px;
+    height: 120px;
+    flex-shrink: 0;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.top-restaurants .restaurant-btn img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    border-radius: 50%;
+    margin-bottom: 8px;
+}
+
+.top-restaurants .restaurant-btn p {
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.top-restaurants .scroll-container-wrapper:hover .scroll-container {
+    animation-play-state: paused;
+}
+
+/* Siap Makan Hari Ini */
+.siap-makan {
+    max-width: 1200px;
+    margin: 24px auto;
+    padding: 16px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.siap-makan .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.siap-makan h2 {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.siap-makan .see-more {
+    font-size: 14px;
+    color: #28a745;
+    text-decoration: none;
+}
+
+.siap-makan .see-more:hover {
+    text-decoration: underline;
+}
+
+.siap-makan .grid-foods {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.siap-makan .food-card {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.siap-makan .food-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.siap-makan .food-card .food-image-container {
+    position: relative;
+    height: 150px;
+    overflow: hidden;
+}
+
+.siap-makan .food-card .food-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.siap-makan .food-card:hover .food-image {
+    transform: scale(1.05);
+}
+
+.siap-makan .food-card .label-red-small {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background-color: #e74c3c;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.siap-makan .food-card .food-info {
+    padding: 12px;
+}
+
+.siap-makan .food-card .food-name {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.siap-makan .food-card .food-details {
+    margin-top: 8px;
+}
+
+.siap-makan .food-card .time-portion {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.siap-makan .food-card .icon-text {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    color: #666;
+}
+
+.siap-makan .food-card .icon {
+    width: 14px;
+    height: 14px;
+    margin-right: 6px;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    fill: none;
+}
+
+/* News Slider Section */
+.news-slider-section {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 16px;
+}
+
+.news-slider-section .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.section-header h2 {
+    font-size: 24px;
+    color: #333;
+}
+
+.section-header .see-all {
+    color: #28a745;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.news-slider-container {
+    position: relative;
+}
+
+.news-slider {
+    display: flex;
+    overflow: hidden;
+    border-radius: 12px;
+}
+
+.news-slide {
+    min-width: 100%;
+    transition: transform 0.5s ease;
+    display: none;
+}
+
+.news-slide.active {
+    display: block;
+}
+
+.news-highlight {
+    display: flex;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.news-image-container {
+    flex: 1;
+    min-height: 300px;
+}
+
+.news-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.news-content {
+    flex: 1;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.news-title {
+    font-size: 22px;
+    color: #333;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+.news-excerpt {
+    color: #666;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+.news-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.news-tag {
+    background: #f0f0f0;
+    color: #28a745;
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+}
+
+.read-more {
+    color: #28a745;
+    text-decoration: none;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+}
+
+.read-more:hover {
+    text-decoration: underline;
+}
+
+.slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255,255,255,0.7);
+    border: none;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    font-size: 20px;
+    color: #28a745;
+    cursor: pointer;
+    z-index: 10;
+    transition: all 0.3s ease;
+}
+
+.slider-arrow:hover {
+    background: white;
+}
+
+.prev {
+    left: 20px;
+}
+
+.next {
+    right: 20px;
+}
+
+.slider-dots {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 10;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.5);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.dot.active {
+    background: white;
+}
+
+/* Footer */
+footer {
+    background-color: #006633;
+    color: white;
+    padding: 30px 0;
+    margin-top: 40px;
+}
+
+.footer-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 16px;
+}
+
+.footer-logo img {
+    height: 40px;
+}
+
+.footer-nav a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+    font-size: 14px;
+}
+
+.footer-nav a:hover {
+    text-decoration: underline;
+}
+
+.footer-copyright {
+    font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .siap-makan .grid-foods {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
+
+    .siap-makan .food-image-container {
+        height: 120px;
+    }
+
+    header {
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    header nav {
+        margin-top: 16px;
+    }
+
+    .footer-container {
+        flex-direction: column;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .top-restaurants .restaurant-btn {
+        min-width: 100px;
+        height: 100px;
+    }
+
+    .top-restaurants .restaurant-btn img {
+        width: 60px;
+        height: 60px;
+    }
+
+    .news-highlight {
+        flex-direction: column;
+    }
+
+    .news-image-container {
+        min-height: 200px;
+    }
+
+    .news-content {
+        padding: 20px;
+    }
+
+    .news-title {
+        font-size: 18px;
+    }
+
+    .slider-arrow {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+}

@@ -1,150 +1,404 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Giveat - Siap Makan Hari Ini</title>
-
-  <!-- Bootstrap CSS -->
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Giveat - Siap Makan Hari Ini</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+<body>
 
-<body class="bg-white font-sans">
-
-<!-- Header -->
-<header class="d-flex justify-content-between align-items-center px-4 py-3 border-bottom">
-  <div class="logo">
-    <img src="{{ asset('images/logo1.png') }}" alt="GiveAt Logo" height="40" />
-  </div>
-  <nav>
-    <ul class="nav gap-4 mb-0">
-      <li><a href="#" class="nav-link active text-success fw-semibold">Beranda</a></li>
-      <li><a href="#" class="nav-link text-dark fw-semibold">Forum</a></li>
-      <li><a href="#" class="nav-link text-dark fw-semibold">Berita</a></li>
-      <li><a href="#" class="nav-link text-dark fw-semibold">Persebaran</a></li>
-      <li><a href="#" class="nav-link text-dark fw-semibold">FAQ</a></li>
-    </ul>
-  </nav>
-  <div class="d-flex align-items-center gap-2">
-    <span>Hailey Williams</span>
-    <img src="{{ asset('images/user.png') }}" alt="User Profile" width="40" height="40" style="border-radius:50%; object-fit:cover;" />
-  </div>
+<header>
+    <div class="logo">
+        <img src="{{ asset('images/logo1.png') }}" alt="GiveAt Logo" />
+    </div>
+    <nav>
+        <a href="#" class="active">Beranda</a>
+        <a href="#">Forum</a>
+        <a href="#">Berita</a>
+        <a href="#">Persebaran</a>
+        <a href="#">FAQ</a>
+    </nav>
+    <div class="user-profile">
+        <span>Hailey Williams</span>
+        <img src="{{ asset('images/user.png') }}" alt="User Profile" />
+    </div>
 </header>
 
-<main class="container my-4 max-w-screen-xl mx-auto">
-
-  <!-- Banner -->
-  <div class="mb-5 rounded-lg overflow-hidden">
-    <img src="{{ asset('images/banner/banner.png') }}" alt="Banner Promo" class="w-full h-auto object-cover rounded-lg" />
-  </div>
-
-  <!-- Top Restaurant Section -->
-  <section aria-label="Top Restaurant">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="fs-4 fw-bold m-0">Top Restaurant</h2>
-      <a href="#" class="link-success small text-decoration-none">Lihat Selengkapnya</a>
+<main class="container">
+    <!-- Banner -->
+    <div class="banner-container">
+        <img src="{{ asset('images/banner/banner.png') }}" alt="Banner" class="banner-image" />
     </div>
 
-    <div class="d-flex gap-3 overflow-auto pb-md-2 scroll-container" style="scrollbar-width: none; -ms-overflow-style: none;">
-      @foreach ($restaurants as $restaurant)
-        <div style="min-width: 80px; min-height: 80px; border: 1px solid #ddd; border-radius: 12px; padding: 10px; display: flex; align-items: center; justify-content: center;">
-          <img src="{{ asset('images/restaurants/' . $restaurant->logo) }}" alt="{{ $restaurant->name }}" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+    <!-- Top Restaurants -->
+    <div class="top-restaurants">
+        <div class="header">
+            <h2>Top Restaurant</h2>
+            <a href="#" class="view-more">Lihat Selengkapnya</a>
         </div>
-      @endforeach
-    </div>
-  </section>
-
-  <!-- Siap Makan Hari Ini Section -->
-  <section aria-label="Siap Makan Hari Ini" class="mt-5">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2 class="fs-4 fw-bold m-0">Siap Makan Hari Ini</h2>
-      <a href="#" class="link-success small text-decoration-none">Lihat Selengkapnya</a>
-    </div>
-
-  <div class="row g-3">
-    @foreach ($foods as $food)
-      <div class="col-md-6 col-lg-3">
-        <div class="card h-100 position-relative">
-          
-          {{-- Tampilkan badge jika porsi <= 5 --}}
-          @if ($food->portion <= 5)
-            <span class="position-absolute top-0 start-0 bg-danger text-white px-2 py-1 rounded-end small fw-semibold">
-              Tersisa {{ $food->portion }}
-            </span>
-          @endif
-
-          {{-- Gambar Makanan --}}
-          <img 
-            src="{{ asset('images/foods/' . $food->image) }}" 
-            alt="{{ $food->name }}" 
-            class="card-img-top object-cover rounded-top" 
-            style="height: 180px; object-fit: cover;"
-            onerror="this.src='{{ asset('images/foods/') }}';"
-          />
-
-          <div class="card-body py-2">
-            <h6 class="card-title fw-bold">{{ $food->name }}</h6>
-            <p class="small text-muted mb-1">{{ Str::limit($food->description, 50, '...') }}</p>
-
-            <ul class="list-inline list-unstyled small text-muted mb-0 d-flex flex-wrap gap-2">
-              <li class="d-flex align-items-center gap-1" title="Porsi">
-                🍽️ {{ $food->portion }} Porsi
-              </li>
-              <li class="d-flex align-items-center gap-1" title="Waktu Persiapan">
-                ⏱️ {{ \Carbon\Carbon::parse($food->prepared_at)->diffForHumans() }}
-              </li>
-            </ul>
-          </div>
+        <div class="scroll-container-wrapper">
+            <div class="scroll-container">
+                <!-- Daftar Asli -->
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/cheffest.png') }}" alt="Cheffest" />
+                    <p>Cheffest</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/bistro.png') }}" alt="Bistro" />
+                    <p>Bistro</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/dapur.png') }}" alt="Dapur" />
+                    <p>Dapur Keluarga</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/resto1.png') }}" alt="Resto 1" />
+                    <p>Resto 1</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/resto2.png') }}" alt="Resto 2" />
+                    <p>Resto 2</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/selera.png') }}" alt="Selera" />
+                    <p>Selera Bersama</p>
+                </div>
+                <!-- Duplikat untuk efek infinite -->
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/cheffest.png') }}" alt="Cheffest" />
+                    <p>Cheffest</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/bistro.png') }}" alt="Bistro" />
+                    <p>Bistro</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/dapur.png') }}" alt="Dapur" />
+                    <p>Dapur Keluarga</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/resto1.png') }}" alt="Resto 1" />
+                    <p>Resto 1</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/resto2.png') }}" alt="Resto 2" />
+                    <p>Resto 2</p>
+                </div>
+                <div class="restaurant-btn">
+                    <img src="{{ asset('images/restaurants/selera.png') }}" alt="Selera" />
+                    <p>Selera Bersama</p>
+                </div>
+            </div>
         </div>
-      </div>
-    @endforeach
-  </div>
-</section>
-
-<!-- Ada Apa Hari Ini Section -->
-<section aria-label="Ada Apa Hari Ini" class="mt-5">
-  <div class="d-flex justify-content-between align-items-center mb-3">
-    <h2 class="fs-4 fw-bold m-0">Ada Apa Hari Ini</h2>
-  </div>
-
-  <div class="row g-3">
-    <div class="col-12">
-      <div class="card border-0 shadow-sm overflow-hidden">
-        <img src="{{ asset('images/berita/berita.png') }}" alt="Berita Hari Ini" class="w-100 h-auto object-cover" style="max-height: 300px;">
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer style="background-color: #14532d; color: white; padding: 16px 30px;">
-  <div style="max-width: 1200px; margin: auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap;">
-    <!-- Logo -->
-    <div style="display:flex; align-items:center;">
-      <img src="{{ asset('images/logo2.png') }}" alt="GiveAt Logo" style="height:40px;" />
-      <span style="margin-left:10px;"></span>
     </div>
 
-    <!-- Links -->
-    <nav>
-      <a href="#" style="color:white; margin-right:20px; text-decoration:none;">Privacy Policy</a>
-      <a href="#" style="color:white; text-decoration:none;">Hubungi Kami</a>
-    </nav>
+    <!-- Siap Makan Hari Ini -->
+    <div class="siap-makan">
+        <div class="header">
+            <h2>Siap Makan Hari Ini</h2>
+            <a href="#" class="see-more">Lihat Selengkapnya</a>
+        </div>
+        <div class="grid-foods">
+            <!-- Sop Ayam dan Sayur -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/sop_ayam_sayur.png') }}" alt="Sop Ayam dan Sayur" class="food-image" />
+                    <div class="label-red-small">Tersisa 5</div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Sop Ayam dan Sayur</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>30 menit</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Ayam Goreng -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/ayam_goreng.png') }}" alt="Ayam Goreng" class="food-image" />
+                    <div class="label-red-small">Tersisa 5</div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Ayam Goreng</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>20 menit</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sayur Asem -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/sayur_asem.png') }}" alt="Sayur Asem" class="food-image" />
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Sayur Asem</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>35 menit</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Kwetiau Goreng -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/kwetiau_goreng.png') }}" alt="Kwetiau Goreng" class="food-image" />
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Kwetiau Goreng</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>20 menit</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sate Ayam -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/sate_ayam.png') }}" alt="Sate Ayam" class="food-image" />
+                    <div class="label-red-small">Tersisa 5</div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Sate Ayam</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>1 Jam</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Sop Udang -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/sop_udang.png') }}" alt="Sop Udang" class="food-image" />
+                    <div class="label-red-small">Tersisa 5</div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Sop Udang</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>1 Jam</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Ketoprak -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/ketoprak.png') }}" alt="Ketoprak" class="food-image" />
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Ketoprak</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>2 Jam</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Nasi Goreng -->
+            <div class="food-card">
+                <div class="food-image-container">
+                    <img src="{{ asset('images/foods/nasi_goreng.png') }}" alt="Nasi Goreng" class="food-image" />
+                    <div class="label-red-small">Tersisa 5</div>
+                </div>
+                <div class="food-info">
+                    <div class="food-name">Nasi Goreng</div>
+                    <div class="food-details">
+                        <div class="time-portion">
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                                <span>2 Jam</span>
+                            </div>
+                            <div class="icon-text">
+                                <svg class="icon" viewBox="0 0 24 24">
+                                    <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"></path>
+                                </svg>
+                                <span>5 porsi</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <!-- Copyright -->
-    <div>© 2025 GiveAt Food Cycle. All Rights Reserved.</div>
-  </div>
+    <!-- News Slider Section -->
+    <section class="news-slider-section">
+        <div class="section-header">
+            <h2>Ada Apa Hari Ini</h2>
+            <a href="#" class="see-all">Lihat Semua</a>
+        </div>
+        <div class="news-slider-container">
+            <div class="news-slider">
+                <!-- Slide 1 -->
+                <div class="news-slide active">
+                    <div class="news-highlight">
+                        <div class="news-image-container">
+                            <img src="{{ asset('images/berita/gaza.jpg') }}" alt="Konflik Gaza" class="news-image" />
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">PBB: Ancaman Kelaparan Makin Meningkat akibat Konflik di Jalur Gaza</h3>
+                            <p class="news-excerpt">PBB memperingatkan ancaman kelaparan semakin meningkat akibat konflik berkepanjangan di wilayah Gaza.</p>
+                            <div class="news-footer">
+                                <span class="news-tag">Jalur Gaza</span>
+                                <a href="#" class="read-more">Lihat Selengkapnya →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 2 -->
+                <div class="news-slide">
+                    <div class="news-highlight">
+                        <div class="news-image-container">
+                            <img src="{{ asset('images/berita/gaza2.jpg') }}" alt="Berita 2" class="news-image" />
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">Kampanye GiveAt: Berbagi Makanan untuk Sesama</h3>
+                            <p class="news-excerpt">Inisiatif baru untuk mengurangi food waste dan membantu mereka yang membutuhkan.</p>
+                            <div class="news-footer">
+                                <span class="news-tag">Kampanye</span>
+                                <a href="#" class="read-more">Lihat Selengkapnya →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Slide 3 -->
+                <div class="news-slide">
+                    <div class="news-highlight">
+                        <div class="news-image-container">
+                            <img src="{{ asset('images/berita/gaza3.jpg') }}" alt="Berita 3" class="news-image" />
+                        </div>
+                        <div class="news-content">
+                            <h3 class="news-title">Tahun Berganti, Warga Gaza Masih Berdesakan Antre Makanan</h3>
+                            <p class="news-excerpt">Miris rasanya melihat warga Gaza yang masih berdesakan menantre makanan.</p>
+                            <div class="news-footer">
+                                <span class="news-tag">Renungan</span>
+                                <a href="#" class="read-more">Lihat Selengkapnya →</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Navigation Dots -->
+            <div class="slider-dots">
+                <span class="dot active"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <!-- Navigation Arrows -->
+            <button class="slider-arrow prev">‹</button>
+            <button class="slider-arrow next">›</button>
+        </div>
+    </section>
+</main>
+
+<footer>
+    <div class="footer-container">
+        <div class="footer-logo">
+            <img src="{{ asset('images/logo2.png') }}" alt="GiveAt Logo" />
+        </div>
+        <nav class="footer-nav">
+            <a href="#">Privacy Policy</a> | 
+            <a href="#">Hubungi Kami</a>
+        </nav>
+        <div class="footer-copyright">© 2025 GiveAt Food Cycle. All Rights Reserved.</div>
+    </div>
 </footer>
-
-<!-- Scripts -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdn.tailwindcss.com"></script>
-<script>
-  // Interaksi JS bisa ditambahkan di sini
-</script>
 
 </body>
 </html>
