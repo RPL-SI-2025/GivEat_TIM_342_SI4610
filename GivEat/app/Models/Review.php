@@ -9,7 +9,14 @@ class Review extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'comment', 'rating'];
+    protected $fillable = [
+        'nama_restoran',
+        'nama_hidangan',
+        'penilaian',
+        'foto_makanan',
+        'deskripsi_ulasan',
+        'tag',
+    ];
 
     // Relasi Review ke User
     public function user()

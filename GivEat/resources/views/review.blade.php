@@ -95,24 +95,26 @@
                 <h3 class="text-lg font-semibold">Review Penerima</h3>
                 <a href="#" class="text-green-600 text-sm">Lihat Selengkapnya</a>
             </div>
-            <div class="grid grid-cols-3 gap-4 mb-10">
-                @forelse($reviews as $review)
-                    <div class="bg-white p-5 rounded-xl shadow-md">
-                        <p class="text-8xl text-green-600 leading-none">“</p>
-                        <p class="text-sm mb-4">{{ $review->pesan }}</p>
-                        <div class="flex items-center mt-4">
-                            @if($review->foto)
-                                <img src="{{ asset('storage/' . $review->foto) }}" alt="Profil" class="w-8 h-8 rounded-full">
-                            @else
-                                <img src="{{ asset('assets/img/default-avatar.png') }}" alt="Default" class="w-8 h-8 rounded-full">
-                            @endif
-                            <span class="text-sm font-medium ml-2">{{ $review->nama }}</span>
+            @if(isset($reviews))
+                <div class="grid grid-cols-3 gap-4 mb-10">
+                    @forelse($reviews as $review)
+                        <div class="bg-white p-5 rounded-xl shadow-md">
+                            <p class="text-8xl text-green-600 leading-none">“</p>
+                            <p class="text-sm mb-4">{{ $review->pesan }}</p>
+                            <div class="flex items-center mt-4">
+                                @if($review->foto)
+                                    <img src="{{ asset('storage/' . $review->foto) }}" alt="Profil" class="w-8 h-8 rounded-full">
+                                @else
+                                    <img src="{{ asset('assets/img/default-avatar.png') }}" alt="Default" class="w-8 h-8 rounded-full">
+                                @endif
+                                <span class="text-sm font-medium ml-2">{{ $review->nama }}</span>
+                            </div>
                         </div>
-                    </div>
-                @empty
-                    <p class="text-gray-600 col-span-3">Belum ada review.</p>
-                @endforelse
-            </div>
+                    @empty
+                        <p class="text-gray-600 col-span-3">Belum ada review.</p>
+                    @endforelse
+                </div>
+            @endif
 
 
             <!-- Terakhir Dipesan -->
