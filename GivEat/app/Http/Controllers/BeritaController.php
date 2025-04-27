@@ -4,15 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Models\Berita;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class BeritaController extends Controller
 {
+
     public function index(Request $request)
     {
-        $page = $request->get('page', 1); 
+        $page = $request->get('page', 1);
+
         $beritaTerbaru = null;
-        $beritaLainnya = collect(); // default kosong
+        $beritaLainnya = collect();
 
         if ($page == 1) {
             $beritaTerbaru = Berita::latest()->first();
@@ -43,7 +44,7 @@ class BeritaController extends Controller
 
     public function adminIndex()
     {
-        $beritas = Berita::latest()->get(); 
+        $beritas = Berita::latest()->get();
         return view('admin.berita.index', compact('beritas'));
     }
 
@@ -67,12 +68,12 @@ class BeritaController extends Controller
 
         Berita::create([
             'judul' => $request->judul,
-            'gambar' => $filename, 
+            'gambar' => $filename,
             'ringkasan' => $request->ringkasan,
             'isi' => $request->isi,
         ]);
 
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil ditambahkan.');
     }
 
     public function edit(Berita $berita)
@@ -105,7 +106,7 @@ class BeritaController extends Controller
 
         $berita->update($data);
 
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil diperbarui.');
     }
 
     public function destroy(Berita $berita)
@@ -117,6 +118,6 @@ class BeritaController extends Controller
 
         $berita->delete();
 
-        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus');
+        return redirect()->route('admin.berita.index')->with('success', 'Berita berhasil dihapus.');
     }
 }

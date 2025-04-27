@@ -12,14 +12,12 @@ class BeritaFeatureTest extends TestCase
 {
     use RefreshDatabase;
 
-    /** @test */
     public function halaman_index_berita_dapat_diakses()
     {
         $response = $this->get(route('berita.index'));
         $response->assertStatus(200);
     }
 
-    /** @test */
     public function dapat_menampilkan_berita_terbaru_dan_lainnya()
     {
         $berita1 = Berita::factory()->create(['created_at' => now()->subDay()]);
@@ -30,7 +28,6 @@ class BeritaFeatureTest extends TestCase
         $response->assertSee($berita1->judul);
     }
 
-    /** @test */
     public function dapat_melihat_detail_berita()
     {
         $berita = Berita::factory()->create();
@@ -40,7 +37,6 @@ class BeritaFeatureTest extends TestCase
         $response->assertSee($berita->judul);
     }
 
-    /** @test */
     public function dapat_menambah_berita()
     {
         Storage::fake('images');
@@ -58,14 +54,12 @@ class BeritaFeatureTest extends TestCase
         $this->assertDatabaseHas('beritas', ['judul' => 'Judul Berita']);
     }
 
-    /** @test */
     public function validasi_gagal_jika_data_tidak_lengkap()
     {
         $response = $this->post(route('admin.berita.store'), [
             'judul' => '',
             'ringkasan' => '',
             'isi' => '',
-            // gambar tidak diisi
         ]);
 
         $response->assertSessionHasErrors(['judul', 'gambar', 'ringkasan', 'isi']);
