@@ -329,7 +329,7 @@
             <div class="hero">
                 <img src="{{ asset('images/sop-ayam.jpg') }}" alt="Sop Ayam">
                 <span class="badge">Selamatkan segera</span>
-                <span class="timer">⏰ 01:37:29</span>
+                <span class="timer" id="countdown-timer">⏰ 01:37:29</span>
             </div>
 
             <!-- Content -->
@@ -389,7 +389,7 @@
 
                 <!-- Button Setelah Klaim -->
                 <div id="afterClaimButtons" style="display: none;">
-                    <a href="#" id="lihatBuktiBtn" class="ambil-button" style="background-color: #DCFCE7; color: #15803D; text-decoration: none; display: block; text-align: center; margin-bottom: 10px; width: 100%; box-sizing: border-box;">Lihat Bukti Pemesanan</a>
+                    <a href="{{ route('claim.success', 'default-slug') }}" class="ambil-button" style="background-color: #DCFCE7; color: #15803D; text-decoration: none; display: block; text-align: center; margin-bottom: 10px; width: 100%; box-sizing: border-box;">Lihat Bukti Pemesanan</a>
                     
                     <form action="{{ route('claim.cancel', $donation->id_donation) }}" method="POST" style="display: block; width: 100%;">
                         @csrf
@@ -400,6 +400,15 @@
 
                 <script>
                 document.addEventListener("DOMContentLoaded", function() {
+                    // Bersihkan interval sebelumnya jika ada
+                    const previousIntervalId = localStorage.getItem('countdownIntervalId');
+                    if (previousIntervalId) {
+                        clearInterval(parseInt(previousIntervalId));
+                    }
+                    
+                    // Inisialisasi countdown timer
+                    initCountdownTimer();
+                    
                     // Cek apakah ada notifikasi pembatalan klaim dari session
                     @if(session('claimDeleted'))
                         localStorage.removeItem('claimData');
@@ -413,18 +422,18 @@
                     const closeModalBtn = document.getElementById('closeModalBtn');
                     const modal = document.getElementById('modalCodeBooking');
                     
-                    if (closeModalBtn) {
+                    if (closeModalBtn && modal) {
                         closeModalBtn.addEventListener('click', function() {
                             modal.style.display = 'none';
                         });
+                        
+                        // Close modal when clicking outside
+                        window.addEventListener('click', function(event) {
+                            if (event.target === modal) {
+                                modal.style.display = 'none';
+                            }
+                        });
                     }
-                    
-                    // Close modal when clicking outside
-                    window.addEventListener('click', function(event) {
-                        if (event.target === modal) {
-                            modal.style.display = 'none';
-                        }
-                    });
                     
                     // Cek apakah sudah klaim dari localStorage
                     const claimDataString = localStorage.getItem('claimData');
@@ -436,153 +445,241 @@
                         if (claimData.donation_id === "{{ $donation->id_donation }}") {
                             console.log("ID donation cocok, menampilkan tombol alternatif");
                             // Tampilkan tombol setelah klaim
-                            document.getElementById('claimForm').style.display = 'none';
-                            document.getElementById('afterClaimButtons').style.display = 'block';
+                            const claimForm = document.getElementById('claimForm');
+                            const afterClaimButtons = document.getElementById('afterClaimButtons');
                             
-                            // Set up event listener untuk tombol lihat bukti
-                            document.getElementById('lihatBuktiBtn').addEventListener('click', function(e) {
-                                e.preventDefault();
-                                modal.style.display = 'block';
-                            });
-                            
-                            // Set up event listener untuk tombol batalkan
-                            document.getElementById('batalkanBtn').addEventListener('click', function(e) {
-                                e.preventDefault();
-                                if (confirm('Apakah Anda yakin ingin membatalkan pemesanan?')) {
-                                    // Buat form untuk melakukan DELETE request
-                                    const form = document.createElement('form');
-                                    form.method = 'POST';
-                                    form.action = "{{ route('claim.cancel', $donation->id_donation) }}";
-                                    form.style.display = 'none';
-                                    
-                                    // Tambahkan method DELETE dan CSRF token
-                                    const methodInput = document.createElement('input');
-                                    methodInput.type = 'hidden';
-                                    methodInput.name = '_method';
-                                    methodInput.value = 'DELETE';
-                                    
-                                    const csrfInput = document.createElement('input');
-                                    csrfInput.type = 'hidden';
-                                    csrfInput.name = '_token';
-                                    csrfInput.value = "{{ csrf_token() }}";
-                                    
-                                    // Gabungkan semua elemen dan submit form
-                                    form.appendChild(methodInput);
-                                    form.appendChild(csrfInput);
-                                    document.body.appendChild(form);
-                                    form.submit();
+                            if (claimForm && afterClaimButtons) {
+                                claimForm.style.display = 'none';
+                                afterClaimButtons.style.display = 'block';
+                                
+                                // Set up event listener untuk tombol lihat bukti
+                                const lihatBuktiBtn = document.getElementById('lihatBuktiBtn');
+                                if (lihatBuktiBtn && modal) {
+                                    lihatBuktiBtn.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        modal.style.display = 'block';
+                                    });
                                 }
-                            });
+                                
+                                // Set up event listener untuk tombol batalkan
+                                const batalkanBtn = document.getElementById('batalkanBtn');
+                                if (batalkanBtn) {
+                                    batalkanBtn.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        if (confirm('Apakah Anda yakin ingin membatalkan pemesanan?')) {
+                                            // Buat form untuk melakukan DELETE request
+                                            const form = document.createElement('form');
+                                            form.method = 'POST';
+                                            form.action = "{{ route('claim.cancel', $donation->id_donation) }}";
+                                            form.style.display = 'none';
+                                            
+                                            // Tambahkan method DELETE dan CSRF token
+                                            const methodInput = document.createElement('input');
+                                            methodInput.type = 'hidden';
+                                            methodInput.name = '_method';
+                                            methodInput.value = 'DELETE';
+                                            
+                                            const csrfInput = document.createElement('input');
+                                            csrfInput.type = 'hidden';
+                                            csrfInput.name = '_token';
+                                            csrfInput.value = "{{ csrf_token() }}";
+                                            
+                                            // Gabungkan semua elemen dan submit form
+                                            form.appendChild(methodInput);
+                                            form.appendChild(csrfInput);
+                                            document.body.appendChild(form);
+                                            form.submit();
+                                        }
+                                    });
+                                }
+                            }
                         }
                     }
                     
                     @if(session('show_modal'))
-                    modal.style.display = 'block';
-                    
-                    // Simpan data klaim ke localStorage
-                    // TODO : Ganti setelah authentication sudah ada
-                    const claimData = {
-                        recipient: {
-                            name: "{{ session('claim.recipient.name') }}",
-                            address: "{{ session('claim.recipient.address') }}"
-                        },
-                        donation: {
-                            claim_date: "{{ session('claim.donation.claim_date') }}",
-                            booking_code: "{{ session('claim.donation.booking_code') }}",
-                            food_name: "{{ $donation->food_name }}"
-                        },
-                        slug: "{{ $donation->slug ?? 'default-slug' }}",
-                        donation_id: "{{ $donation->id_donation }}"
-                    };
-                    
-                    localStorage.setItem('claimData', JSON.stringify(claimData));
-                    
-                    // Sembunyikan form klaim dan tampilkan tombol alternatif
-                    document.getElementById('claimForm').style.display = 'none';
-                    document.getElementById('afterClaimButtons').style.display = 'block';
+                    if (modal) {
+                        modal.style.display = 'block';
+                        
+                        // Simpan data klaim ke localStorage
+                        // TODO : Ganti setelah authentication sudah ada
+                        const claimData = {
+                            recipient: {
+                                name: "{{ session('claim.recipient.name') }}",
+                                address: "{{ session('claim.recipient.address') }}"
+                            },
+                            donation: {
+                                claim_date: "{{ session('claim.donation.claim_date') }}",
+                                booking_code: "{{ session('claim.donation.booking_code') }}",
+                                food_name: "{{ $donation->food_name }}"
+                            },
+                            slug: "{{ $donation->slug ?? 'default-slug' }}",
+                            donation_id: "{{ $donation->id_donation }}"
+                        };
+                        
+                        localStorage.setItem('claimData', JSON.stringify(claimData));
+                        
+                        // Sembunyikan form klaim dan tampilkan tombol alternatif
+                        const claimForm = document.getElementById('claimForm');
+                        const afterClaimButtons = document.getElementById('afterClaimButtons');
+                        
+                        if (claimForm && afterClaimButtons) {
+                            claimForm.style.display = 'none';
+                            afterClaimButtons.style.display = 'block';
+                        }
+                    }
                     @endif
                 });
                 
                 // Cetak PDF dengan styling modern
-                document.getElementById('printButton').addEventListener('click', async function() {
-                    const {
-                        jsPDF
-                    } = window.jspdf; // Pastikan jsPDF sudah di-load
-                    const doc = new jsPDF();
-
+                document.getElementById('printButton')?.addEventListener('click', async function() {
                     try {
-                        // Muat gambar logo
-                        const logoUrl = "{{ asset('images/LOGO GIVEAT 2.png') }}"; // URL logo
-                        const logoResponse = await fetch(logoUrl);
-                        if (!logoResponse.ok) {
-                            throw new Error('Gagal memuat logo');
+                        const { jsPDF } = window.jspdf; // Pastikan jsPDF sudah di-load
+                        if (!jsPDF) {
+                            console.error('jsPDF tidak ditemukan');
+                            alert('Library PDF tidak ditemukan. Silakan coba lagi nanti.');
+                            return;
                         }
-                        const logoBlob = await logoResponse.blob();
-                        const logoDataUrl = await new Promise((resolve) => {
-                            const reader = new FileReader();
-                            reader.onload = () => resolve(reader.result);
-                            reader.readAsDataURL(logoBlob);
+                        
+                        const doc = new jsPDF();
+    
+                        try {
+                            // Muat gambar logo
+                            const logoUrl = "{{ asset('images/LOGO GIVEAT 2.png') }}"; // URL logo
+                            const logoResponse = await fetch(logoUrl);
+                            if (!logoResponse.ok) {
+                                throw new Error('Gagal memuat logo');
+                            }
+                            const logoBlob = await logoResponse.blob();
+                            const logoDataUrl = await new Promise((resolve) => {
+                                const reader = new FileReader();
+                                reader.onload = () => resolve(reader.result);
+                                reader.readAsDataURL(logoBlob);
+                            });
+    
+                            // Tambahkan logo ke PDF
+                            doc.addImage(logoDataUrl, 'PNG', 10, 10, 50, 20); // X, Y, Width, Height
+                        } catch (error) {
+                            console.error('Error memuat logo:', error);
+                            alert('Gagal memuat logo. Melanjutkan tanpa logo...');
+                        }
+    
+                        // Header
+                        doc.setFontSize(20);
+                        doc.setTextColor(40, 40, 40);
+                        doc.text('Bukti Pemesanan', 105, 40, {
+                            align: 'center'
                         });
-
-                        // Tambahkan logo ke PDF
-                        doc.addImage(logoDataUrl, 'PNG', 10, 10, 50, 20); // X, Y, Width, Height
+    
+                        // Garis pemisah
+                        doc.setDrawColor(0, 0, 0);
+                        doc.setLineWidth(0.5);
+                        doc.line(10, 45, 200, 45);
+    
+                        // Informasi Pemesanan
+                        doc.setFontSize(12);
+                        doc.setTextColor(60, 60, 60);
+                        doc.text('Nama Pengguna:', 10, 60);
+                        doc.setFontSize(14);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text('John Doe', 60, 60);
+    
+                        doc.setFontSize(12);
+                        doc.setTextColor(60, 60, 60);
+                        doc.text('Tanggal Klaim:', 10, 70);
+                        doc.setFontSize(14);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text('13 April 2025', 60, 70);
+    
+                        doc.setFontSize(12);
+                        doc.setTextColor(60, 60, 60);
+                        doc.text('Alamat:', 10, 80);
+                        doc.setFontSize(14);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text('Jl. Contoh Alamat No. 123', 60, 80);
+    
+                        doc.setFontSize(12);
+                        doc.setTextColor(60, 60, 60);
+                        doc.text('Kode Booking:', 10, 90);
+                        doc.setFontSize(14);
+                        doc.setTextColor(0, 0, 0);
+                        doc.text('ABC12345', 60, 90);
+    
+                        // Footer
+                        doc.setFontSize(10);
+                        doc.setTextColor(100, 100, 100);
+                        doc.text('Terima kasih telah menggunakan layanan kami.', 105, 290, {
+                            align: 'center'
+                        });
+    
+                        // Simpan file PDF
+                        doc.save('bukti-pemesanan.pdf');
                     } catch (error) {
-                        console.error('Error memuat logo:', error);
-                        alert('Gagal memuat logo. Pastikan file logo tersedia.');
+                        console.error('Error saat membuat PDF:', error);
+                        alert('Terjadi kesalahan saat membuat PDF. Silakan coba lagi nanti.');
+                    }
+                });
+                
+                // Fungsi untuk menginisialisasi countdown timer
+                function initCountdownTimer() {
+                    const timerElement = document.getElementById('countdown-timer');
+                    if (!timerElement) {
+                        console.log('Timer element tidak ditemukan');
                         return;
                     }
-
-                    // Header
-                    doc.setFontSize(20);
-                    doc.setTextColor(40, 40, 40);
-                    doc.text('Bukti Pemesanan', 105, 40, {
-                        align: 'center'
-                    });
-
-                    // Garis pemisah
-                    doc.setDrawColor(0, 0, 0);
-                    doc.setLineWidth(0.5);
-                    doc.line(10, 45, 200, 45);
-
-                    // Informasi Pemesanan
-                    doc.setFontSize(12);
-                    doc.setTextColor(60, 60, 60);
-                    doc.text('Nama Pengguna:', 10, 60);
-                    doc.setFontSize(14);
-                    doc.setTextColor(0, 0, 0);
-                    doc.text('John Doe', 60, 60);
-
-                    doc.setFontSize(12);
-                    doc.setTextColor(60, 60, 60);
-                    doc.text('Tanggal Klaim:', 10, 70);
-                    doc.setFontSize(14);
-                    doc.setTextColor(0, 0, 0);
-                    doc.text('13 April 2025', 60, 70);
-
-                    doc.setFontSize(12);
-                    doc.setTextColor(60, 60, 60);
-                    doc.text('Alamat:', 10, 80);
-                    doc.setFontSize(14);
-                    doc.setTextColor(0, 0, 0);
-                    doc.text('Jl. Contoh Alamat No. 123', 60, 80);
-
-                    doc.setFontSize(12);
-                    doc.setTextColor(60, 60, 60);
-                    doc.text('Kode Booking:', 10, 90);
-                    doc.setFontSize(14);
-                    doc.setTextColor(0, 0, 0);
-                    doc.text('ABC12345', 60, 90);
-
-                    // Footer
-                    doc.setFontSize(10);
-                    doc.setTextColor(100, 100, 100);
-                    doc.text('Terima kasih telah menggunakan layanan kami.', 105, 290, {
-                        align: 'center'
-                    });
-
-                    // Simpan file PDF
-                    doc.save('bukti-pemesanan.pdf');
-                });
+                    
+                    try {
+                        // Ambil waktu awal dari teks timer (format: ⏰ 01:37:29)
+                        const initialTimeText = timerElement.textContent.replace('⏰ ', '');
+                        
+                        // Parse waktu menjadi jam, menit, detik
+                        let [hours, minutes, seconds] = initialTimeText.split(':').map(num => parseInt(num, 10));
+                        
+                        // Validasi nilai waktu
+                        if (isNaN(hours) || isNaN(minutes) || isNaN(seconds)) {
+                            console.error('Format waktu tidak valid');
+                            return;
+                        }
+                        
+                        // Total waktu dalam detik
+                        let totalSeconds = hours * 3600 + minutes * 60 + seconds;
+                        
+                        // Fungsi untuk memformat waktu menjadi format 00:00:00
+                        function formatTime(totalSecs) {
+                            const hrs = Math.floor(totalSecs / 3600);
+                            const mins = Math.floor((totalSecs % 3600) / 60);
+                            const secs = totalSecs % 60;
+                            
+                            return `${hrs.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+                        }
+                        
+                        // Update timer setiap detik
+                        const countdownInterval = setInterval(() => {
+                            if (totalSeconds <= 0) {
+                                clearInterval(countdownInterval);
+                                timerElement.textContent = '⏰ Waktu Habis';
+                                timerElement.style.backgroundColor = '#EF4444'; // Merah untuk indikasi waktu habis
+                                return;
+                            }
+                            
+                            totalSeconds--;
+                            timerElement.textContent = `⏰ ${formatTime(totalSeconds)}`;
+                            
+                            // Ubah warna menjadi kuning ketika waktu <= 30 menit
+                            if (totalSeconds <= 1800 && totalSeconds > 600) {
+                                timerElement.style.backgroundColor = '#F59E0B'; // Kuning
+                            }
+                            // Ubah warna menjadi merah ketika waktu <= 10 menit
+                            else if (totalSeconds <= 600) {
+                                timerElement.style.backgroundColor = '#EF4444'; // Merah
+                            }
+                        }, 1000);
+                        
+                        // Simpan interval ID ke localStorage untuk dibersihkan saat halaman dimuat ulang
+                        localStorage.setItem('countdownIntervalId', countdownInterval);
+                    } catch (error) {
+                        console.error('Error dalam countdown timer:', error);
+                    }
+                }
                 </script>
 
             </div>

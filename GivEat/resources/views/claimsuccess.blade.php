@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bukti Pemesanan</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
     <style>
     * {
         margin: 0;
@@ -160,8 +161,6 @@
             document.getElementById('restaurantAddress').innerHTML = "{{ session('claim.recipient.address') }}";
             document.getElementById('bookingCode').textContent = "{{ session('claim.donation.booking_code') }}";
             
-            // Set link kembali ke halaman makanan
-            document.getElementById('backToFoodLink').href = "{{ route('donation.show', ['donation' => session('claim.donation_id') ?? 1]) }}";
             @else
             // Jika tidak ada data session, coba ambil dari localStorage
             // TODO : Ganti setelah authentication sudah ada
@@ -181,11 +180,6 @@
                 
                 document.getElementById('restaurantAddress').innerHTML = claimData.recipient.address;
                 document.getElementById('bookingCode').textContent = claimData.donation.booking_code;
-                
-                // Set link kembali ke halaman makanan
-                if (claimData.slug) {
-                    document.getElementById('backToFoodLink').href = "/food/" + claimData.slug;
-                }
             } else {
                 console.error("Data klaim tidak ditemukan baik di session maupun localStorage");
                 // Tetap tampilkan data placeholder jika tidak ada data
@@ -193,9 +187,131 @@
             @endif
             
             // Tombol cetak PDF
-            document.getElementById('printPdfBtn').addEventListener('click', function() {
-                window.print();
-            });
+            const printPdfBtn = document.getElementById('printPdfBtn');
+            if (printPdfBtn) {
+                printPdfBtn.addEventListener('click', function() {
+                    try {
+                        const { jsPDF } = window.jspdf;
+                        const doc = new jsPDF();
+                        
+                        // Ambil data dari halaman (dengan pengecekan elemen)
+                        const recipientNameEl = document.getElementById('recipientName');
+                        const claimDateEl = document.getElementById('claimDate');
+                        const restaurantAddressEl = document.getElementById('restaurantAddress');
+                        const bookingCodeEl = document.getElementById('bookingCode');
+                        
+                        if (!recipientNameEl || !claimDateEl || !restaurantAddressEl || !bookingCodeEl) {
+                            console.error('Beberapa elemen tidak ditemukan', { 
+                                recipientNameEl, claimDateEl, restaurantAddressEl, bookingCodeEl 
+                            });
+                            alert('Terjadi kesalahan saat membuat PDF. Mencoba metode alternatif...');
+                            window.print();
+                            return;
+                        }
+                        
+                        const recipientName = recipientNameEl.textContent;
+                        const claimDate = claimDateEl.textContent;
+                        const restaurantAddress = restaurantAddressEl.innerHTML
+                            .replace(/<br>/g, ' '); // Mengganti <br> dengan spasi
+                        const bookingCode = bookingCodeEl.textContent;
+                        
+                        // Coba tambahkan logo
+                        const logoUrl = "{{ asset('images/logo-giveat-hitam.png') }}";
+                        
+                        // Fungsi untuk melanjutkan pembuatan PDF
+                        function continueWithPdf(hasLogo = false, logoData = null) {
+                            // Setting dokumen
+                            if (hasLogo && logoData) {
+                                try {
+                                    doc.addImage(logoData, 'PNG', 75, 20, 60, 30);
+                                    // Judul sedikit turun karena ada logo
+                                    doc.setFontSize(22);
+                                    doc.setTextColor(33, 150, 83);
+                                    doc.text('BUKTI PEMESANAN', 105, 65, { align: 'center' });
+                                } catch(e) {
+                                    console.error('Error saat menambahkan logo:', e);
+                                    // Jika gagal, buat judul tanpa logo
+                                    doc.setFontSize(22);
+                                    doc.setTextColor(33, 150, 83);
+                                    doc.text('BUKTI PEMESANAN GIVEAT', 105, 20, { align: 'center' });
+                                }
+                            } else {
+                                // Tanpa logo
+                                doc.setFontSize(22);
+                                doc.setTextColor(33, 150, 83);
+                                doc.text('BUKTI PEMESANAN GIVEAT', 105, 20, { align: 'center' });
+                            }
+                            
+                            // Garis pemisah
+                            const lineY = hasLogo ? 90 : 40;
+                            doc.setDrawColor(33, 150, 83);
+                            doc.setLineWidth(0.5);
+                            doc.line(20, lineY, 190, lineY);
+                            
+                            // Info penerima
+                            const startY = hasLogo ? lineY + 20 : lineY + 20;
+                            doc.setFontSize(14);
+                            doc.setTextColor(0, 0, 0);
+                            doc.text('INFORMASI PESANAN', 20, startY);
+                            
+                            doc.setFontSize(12);
+                            doc.setTextColor(100, 100, 100);
+                            doc.text('Nama Penerima:', 20, startY + 15);
+                            doc.text('Tanggal Klaim:', 20, startY + 30);
+                            doc.text('Alamat Restaurant:', 20, startY + 45);
+                            doc.text('Kode Pemesanan:', 20, startY + 60);
+                            
+                            doc.setTextColor(0, 0, 0);
+                            doc.setFont(undefined, 'bold');
+                            doc.text(recipientName, 100, startY + 15);
+                            doc.text(claimDate, 100, startY + 30);
+                            doc.text(restaurantAddress, 100, startY + 45);
+                            doc.text(bookingCode, 100, startY + 60);
+                            
+                            // Footer
+                            doc.setDrawColor(33, 150, 83);
+                            doc.setLineWidth(0.5);
+                            doc.line(20, 250, 190, 250);
+                            
+                            doc.setFontSize(10);
+                            doc.setTextColor(100, 100, 100);
+                            doc.setFont(undefined, 'normal');
+                            doc.text('Tunjukkan bukti pemesanan ini kepada pemilik restaurant.', 105, 260, { align: 'center' });
+                            doc.text('© 2023 GivEat Food Cycle. All Rights Reserved.', 105, 270, { align: 'center' });
+                            
+                            // Simpan dokumen
+                            doc.save('bukti-pemesanan-' + bookingCode + '.pdf');
+                        }
+                        
+                        // Coba load gambar logo
+                        fetch(logoUrl)
+                            .then(response => {
+                                if (!response.ok) {
+                                    throw new Error('Logo tidak ditemukan');
+                                }
+                                return response.blob();
+                            })
+                            .then(blob => {
+                                const reader = new FileReader();
+                                reader.onload = function(e) {
+                                    continueWithPdf(true, e.target.result);
+                                }
+                                reader.readAsDataURL(blob);
+                            })
+                            .catch(error => {
+                                console.error('Error loading logo:', error);
+                                continueWithPdf(false);
+                            });
+                    } catch (error) {
+                        console.error('Error generating PDF:', error);
+                        alert('Gagal membuat PDF. Silakan coba metode print.');
+                        // Fallback ke print jika jsPDF gagal
+                        window.print();
+                    }
+                });
+            } else {
+                console.error("Tombol cetak PDF tidak ditemukan!");
+            }
         });
     </script>
 </body>
