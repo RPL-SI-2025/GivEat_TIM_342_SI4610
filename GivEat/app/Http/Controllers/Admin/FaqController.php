@@ -42,30 +42,17 @@ class FaqController extends Controller
             'answer' => 'required',
         ]);
 
-        // Log data before update
-        \Log::info('Updating FAQ:', $faq->toArray());
-
         // Update FAQ
         $faq->question = $request->question;
         $faq->answer = $request->answer;
         $faq->save(); // Use save() instead of update()
-
-        // Log data after update
-        \Log::info('Updated FAQ:', $faq->toArray());
 
         return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil diperbarui.');
     }
 
     public function destroy(Faq $faq)
     {
-        // Log data before delete
-        \Log::info('Deleting FAQ with ID:', [$faq->id]);
-
         $faq->delete();
-
-        // Log data after delete
-        \Log::info('Deleted FAQ with ID:', [$faq->id]);
-
         return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus.');
     }
 }

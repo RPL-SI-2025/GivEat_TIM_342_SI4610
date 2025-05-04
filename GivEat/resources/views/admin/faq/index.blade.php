@@ -7,9 +7,7 @@
             <div class="card border-0 shadow rounded-3">
                 <div class="card-header d-flex justify-content-between align-items-center" style="background-color: #146C43;">
                     <h5 class="mb-0 text-white fw-semibold">📋 FAQ Management</h5>
-                    <a href="{{ route('admin.faq.create') }}" class="btn btn-light btn-sm fw-semibold">
-                        Add FAQ
-                    </a>
+                    <a href="{{ route('admin.faq.create') }}" class="btn btn-light btn-sm fw-semibold" dusk="add-faq-button">Add FAQ</a>
                 </div>
                 <div class="card-body p-0">
                     <div class="table-responsive">
