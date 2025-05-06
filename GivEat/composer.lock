@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "417ee5bc5085d93dd53dd84529f27081",
+    "content-hash": "d5603a3f1e490d9cee01a046cba5bc83",
     "packages": [
         {
             "name": "brick/math",
@@ -6015,13 +6015,15 @@
             "extra": {
                 "laravel": {
                     "providers": [
-                        "Laravel\\Dusk\\DuskServiceProvider"
+                        "Laravel\\Dusk\\DuskServiceProvider",
+                        "Laravel\\Breeze\\BreezeServiceProvider"
                     ]
                 }
             },
             "autoload": {
                 "psr-4": {
-                    "Laravel\\Dusk\\": "src/"
+                    "Laravel\\Dusk\\": "src/",
+                    "Laravel\\Breeze\\": "src/"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",

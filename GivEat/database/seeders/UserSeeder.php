@@ -21,7 +21,20 @@ class UserSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        
+        // Admin
+        User::create([
+            'name' => 'Admin',
+            'email' => 'admin@giveat.com',
+            'password' => Hash::make('admin12345'),
+            'usertype' => 'admin',
+        ]);
 
+        // Mitra
+        User::create([
+            'name' => 'Mitra',
+            'email' => 'mitra@giveat.com',
+            'password' => Hash::make('mitra12345'),
+            'usertype' => 'mitra',
+        ]);
     }
 }
