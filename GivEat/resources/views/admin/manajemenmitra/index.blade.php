@@ -42,7 +42,16 @@
                                 <td class="align-middle" style="padding: 1rem; font-weight: 500; color: #495057;">{{ $mitra->name }}</td>
                                 <td class="align-middle" style="padding: 1rem;">{{ $mitra->email }}</td>
                                 <td class="align-middle text-end" style="padding: 1rem;">
-                                    
+                                    <a href="{{ route('admin.manajemenmitra.edit', $mitra->id) }}" class="btn btn-sm btn-outline-info me-1" title="Edit" style="font-size: 0.875rem;">
+                                        <i class="bi bi-pencil"></i>
+                                    </a>
+                                    <form action="{{ route('admin.manajemenmitra.destroy', $mitra->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus mitra ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" style="font-size: 0.875rem;">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         @empty
