@@ -1,64 +1,36 @@
 <x-app-layout>
-    <x-slot name="title">
-        {{ $berita->judul }}
-    </x-slot>
+    <x-slot name="title">Detail Topik</x-slot>
 
-    <div class="max-w-4xl mx-auto px-4 py-8">
-
-        {{-- Judul di bagian atas halaman --}}
-        <div class="mb-4">
-            <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 leading-tight">{{ $berita->judul }}</h1>
-
-            <p class="text-sm text-gray-500 mt-1">
-                Dipublikasikan {{ $berita->created_at->translatedFormat('d F Y') }}
-            </p>
-        </div>
-
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-
-            {{-- Gambar Berita --}}
-            <div class="w-full max-h-[280px] overflow-hidden rounded-t-xl">
-                <img src="{{ asset('images/' . $berita->gambar) }}" alt="{{ $berita->judul }}"
-                     class="w-full h-[280px] object-cover object-center transition-transform duration-500 hover:scale-105">
-            </div>
-
-            {{-- Konten --}}
-            <div class="p-6">
-                <div class="prose max-w-full text-gray-700 leading-relaxed">
-                    {!! nl2br(e($berita->isi)) !!}
+    <div class="py-12">
+        <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+            <div class="bg-white shadow-sm sm:rounded-lg p-6 mb-6">
+                <h2 class="text-3xl font-bold text-[#1A1A1A]">{{ $topic->title }}</h2>
+                <p class="text-gray-700 mt-2">{{ $topic->content }}</p>
+                <div class="text-sm text-gray-500 mt-2">
+                    oleh {{ $topic->user->name }} - {{ $topic->created_at->diffForHumans() }}
                 </div>
             </div>
-        </div>
 
-        {{-- Rekomendasi Berita Lainnya --}}
-        @if ($rekomendasiBerita->count() > 0)
-            <div class="mt-12">
-                <h2 class="text-xl font-bold text-gray-800 mb-4">PILIHAN UNTUKMU</h2>
-                <div id="rekomendasi-scroll" class="flex gap-4 overflow-x-auto pb-4 scroll-smooth">
-                    @foreach ($rekomendasiBerita as $item)
-                        <a href="{{ route('berita.show', $item->id) }}"
-                           class="min-w-[250px] flex-shrink-0 bg-white rounded-lg shadow hover:shadow-lg transition duration-300">
-                            <img src="{{ asset('images/' . $item->gambar) }}" alt="{{ $item->judul }} "
-                                 class="w-full h-40 object-cover rounded-t-lg">
-                            <div class="p-4">
-                                <h3 class="font-semibold text-sm text-gray-800">{{ Str::limit($item->judul, 60) }}</h3>
-                                <p class="text-xs text-gray-500 mt-1">{{ $item->created_at->diffForHumans() }}</p>
-                            </div>
-                        </a>
-                    @endforeach
-                </div>
+            <div class="bg-white shadow-sm sm:rounded-lg p-6 mb-6">
+                <h3 class="text-2xl font-semibold text-[#1A1A1A] mb-4">Komentar</h3>
+                @foreach ($topic->comments as $comment)
+                    <div class="mb-4">
+                        <p class="text-gray-800">{{ $comment->content }}</p>
+                        <div class="text-sm text-gray-500">
+                            oleh {{ $comment->user->name }} - {{ $comment->created_at->diffForHumans() }}
+                        </div>
+                    </div>
+                @endforeach
             </div>
-        @endif
+
+            <div class="bg-white shadow-sm sm:rounded-lg p-6">
+                <h4 class="text-xl font-bold mb-3 text-[#1A1A1A]">Tulis Komentar</h4>
+                <form method="POST" action="{{ route('forum.comment', $topic->id) }}">
+                    @csrf
+                    <textarea name="content" rows="3" class="w-full p-2 border border-gray-300 rounded mb-3" required></textarea>
+                    <button type="submit" class="px-4 py-2 bg-[#00843D] text-white rounded">Kirim</button>
+                </form>
+            </div>
+        </div>
     </div>
-
-    {{-- Scroll horizontal dengan mouse hanya pada rekomendasi --}}
-    <script>
-        const scrollContainer = document.getElementById('rekomendasi-scroll');
-        scrollContainer.addEventListener('wheel', function(e) {
-            if (e.deltaY !== 0) {
-                e.preventDefault();
-                scrollContainer.scrollLeft += e.deltaY;
-            }
-        });
-    </script>
 </x-app-layout>

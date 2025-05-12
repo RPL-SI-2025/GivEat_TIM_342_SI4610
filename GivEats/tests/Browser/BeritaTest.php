@@ -34,6 +34,7 @@ class BeritaTest extends DuskTestCase
                     ->type(field:"ringkasan", value:"Ini Ringkasan Untuk Testing Create Berita")
                     ->type(field:"isi", value:"Ini Isi Berita Untuk Testing Create Berita")
                     ->press(button:"Tambah Berita")
+                    ->pause(500)
                     ->assertSee('Berita berhasil ditambahkan'); ;
         });
     }
@@ -46,6 +47,7 @@ class BeritaTest extends DuskTestCase
                     ->type('judul', 'Judul Berita Diupdate')
                     ->type('isi', 'Isi berita yang sudah diupdate')
                     ->press('Update')
+                    ->pause(500)
                     ->assertSee('Berita berhasil diperbarui'); ;
         });
     }

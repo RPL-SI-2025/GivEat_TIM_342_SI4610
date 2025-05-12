@@ -8,6 +8,7 @@ use App\Http\Controllers\DashboardController;
 Use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\FaqsController;
 use App\Http\Controllers\User\ReviewController;
+use App\Http\Controllers\User\ForumController;
 
 // Using Mitra Controller
 use App\Http\Controllers\Mitra\mitraController;
@@ -17,6 +18,7 @@ use App\Http\Controllers\Mitra\DonationController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\FaqController;
 use App\Http\Controllers\Admin\BeritaController;
+
 
 
 
@@ -49,6 +51,22 @@ Route::middleware(['auth', 'userMiddleware'])->group(function () {
     Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
     Route::put('reviews/{id}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    Route::get('/forum', [ForumController::class, 'index'])->name('forum.index');
+    Route::get('/forum/create', [ForumController::class, 'create'])->name('forum.create');
+    Route::post('/forum', [ForumController::class, 'store'])->name('forum.store');
+    Route::get('/forum/{id}', [ForumController::class, 'show'])->name('forum.show'); // ✅ TAMBAHKAN INI
+    Route::get('/forum/{id}/edit', [ForumController::class, 'edit'])->name('forum.edit');
+    Route::put('/forum/{id}', [ForumController::class, 'update'])->name('forum.update');
+    Route::delete('/forum/{id}', [ForumController::class, 'destroy'])->name('forum.destroy');
+
+    // Comment CRUD
+    Route::post('/forum/{id}/comment', [ForumController::class, 'storeComment'])->name('forum.comment.store');
+    Route::get('/forum/comment/{comment}/edit', [ForumController::class, 'editComment'])->name('forum.comment.edit');
+    Route::put('/forum/comment/{comment}', [ForumController::class, 'updateComment'])->name('forum.comment.update');
+    Route::delete('/forum/comment/{id}', [ForumController::class, 'destroyComment'])->name('forum.comment.destroy');
+
+    Route::post('/forum/{topic}/like', [ForumController::class, 'like'])->name('forum.like');
 
 });
 

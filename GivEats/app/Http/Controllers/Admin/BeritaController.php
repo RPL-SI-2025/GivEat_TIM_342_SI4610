@@ -13,7 +13,7 @@ class BeritaController extends Controller
     {
         $page = $request->get('page', 1); 
         $beritaTerbaru = null;
-        $beritaLainnya = collect(); // default kosong
+        $beritaLainnya = collect();
 
         if ($page == 1) {
             $beritaTerbaru = Berita::latest()->first();
