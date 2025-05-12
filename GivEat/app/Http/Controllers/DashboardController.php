@@ -9,25 +9,15 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Get statistics
-        $stats = [
-            'distributed' => Donation::where('status', 'completed')->count(),
-            'recipients' => Donation::where('status', 'completed')->sum('portion'),
-            'saved' => Donation::where('status', 'completed')->count() * 0.5, // Assuming 0.5kg per donation
-        ];
-
-        // Get recent orders
-        $recentOrders = Donation::latest()
-            ->take(5)
+        $availableDonations = Donation::where('status', 'available')
+            ->with(['partner', 'category'])
+            ->latest()
+            ->take(4)
             ->get();
 
-        // Get donation status counts
-        $statusCounts = [
-            'completed' => Donation::where('status', 'completed')->count(),
-            'pending' => Donation::where('status', 'claimed')->count(),
-            'unclaimed' => Donation::where('status', 'available')->count(),
-        ];
-
-        return view('dashboard', compact('stats', 'recentOrders', 'statusCounts'));
+        return view('dashboard', [
+            'availableDonations' => $availableDonations,
+            'restaurants' => ['cheffest', 'bistro', 'dapur', 'resto1', 'resto2', 'selera'] // Keep existing restaurant data
+        ]);
     }
 }

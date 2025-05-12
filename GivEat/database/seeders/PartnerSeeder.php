@@ -12,7 +12,7 @@ class PartnerSeeder extends Seeder
         Partner::create([
             'id' => 1,
             'name' => 'Default Partner',
-            'email' => 'partner@giveat.com',
+            'email' => 'mitra@giveat.com',
             'phone' => '081234567890',
             'address' => 'Jl. Default No. 1'
         ]);
