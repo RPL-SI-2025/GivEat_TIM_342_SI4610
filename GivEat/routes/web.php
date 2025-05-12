@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+<<<<<<< HEAD
 use App\Http\Controllers\DashboardController;
 
 // Using User Controller
@@ -21,11 +22,15 @@ use App\Http\Controllers\Admin\BeritaController;
 
 
 
+=======
+use App\Http\Controllers\ReviewController;
+>>>>>>> 75b7569e95ef677628f2cd1d26a59a3fe2be5901
 
 Route::get('/', function () {
     return view('welcome');
 });
 
+<<<<<<< HEAD
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -91,3 +96,14 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
     Route::delete('admin/berita/{berita}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
 
 });
+=======
+Route::get('/review', function () {
+    return view('review');
+});
+
+Route::get('reviews/create', [ReviewController::class, 'create'])->name('reviews.create');
+Route::post('/reviews', [ReviewController::class, 'store'])->name('reviews.store');
+Route::resource('reviews', ReviewController::class);
+Route::get('/reviews/{id}/edit', [ReviewController::class, 'edit'])->name('reviews.edit');
+Route::delete('/reviews/{id}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+>>>>>>> 75b7569e95ef677628f2cd1d26a59a3fe2be5901
