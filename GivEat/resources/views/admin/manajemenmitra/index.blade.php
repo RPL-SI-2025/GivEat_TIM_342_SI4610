@@ -30,9 +30,9 @@
                     <thead class="bg-light">
                         <tr>
                             <th style="width: 5%; padding: 1rem; color: #6c757d; font-size: 0.95rem;">No</th>
-                            <th style="padding: 1rem; color: #6c757d; font-size: 0.95rem;">👤 Nama</th>
-                            <th style="padding: 1rem; color: #6c757d; font-size: 0.95rem;">📧 Email</th>
-                            <th style="width: 20%; padding: 1rem; color: #6c757d; font-size: 0.95rem;" class="text-end">⚙️ Aksi</th>
+                            <th style="padding: 1rem; color: #6c757d; font-size: 0.95rem;"><i class="bi bi-person-fill-check"></i> Nama</th>
+                            <th style="padding: 1rem; color: #6c757d; font-size: 0.95rem;"><i class="bi bi-envelope-at-fill"></i> Email</th>
+                            <th style="width: 20%; padding: 1rem; color: #6c757d; font-size: 0.95rem;" class="text-end"><i class="bi bi-gear-fill me-2"></i> Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -43,13 +43,13 @@
                                 <td class="align-middle" style="padding: 1rem;">{{ $mitra->email }}</td>
                                 <td class="align-middle text-end" style="padding: 1rem;">
                                     <a href="{{ route('admin.manajemenmitra.edit', $mitra->id) }}" class="btn btn-sm btn-outline-info me-1" title="Edit" style="font-size: 0.875rem;">
-                                        <i class="bi bi-pencil"></i>
+                                        <i class="bi bi-pencil"></i>Edit
                                     </a>
                                     <form action="{{ route('admin.manajemenmitra.destroy', $mitra->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus mitra ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" style="font-size: 0.875rem;">
-                                            <i class="bi bi-trash"></i>
+                                            <i class="bi bi-trash"></i>Hapus
                                         </button>
                                     </form>
                                 </td>

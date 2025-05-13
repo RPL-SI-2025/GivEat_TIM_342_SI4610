@@ -30,9 +30,9 @@
                     <thead class="bg-light">
                         <tr>
                             <th style="width: 5%; padding: 1rem; color: #6c757d; font-size: 0.95rem;">No</th>
-                            <th style="width: 35%; padding: 1rem; color: #6c757d; font-size: 0.95rem;">🗨️ Pertanyaan</th>
-                            <th style="width: 40%; padding: 1rem; color: #6c757d; font-size: 0.95rem;">💬 Jawaban</th>
-                            <th style="width: 20%; padding: 1rem; color: #6c757d; font-size: 0.95rem;" class="text-end">⚙️ Aksi</th>
+                            <th style="width: 35%; padding: 1rem; color: #6c757d; font-size: 0.95rem;"><i class="bi bi-question-circle-fill"></i> Pertanyaan</th>
+                            <th style="width: 40%; padding: 1rem; color: #6c757d; font-size: 0.95rem;"><i class="bi bi-question-circle-fill"></i> Jawaban</th>
+                            <th style="width: 20%; padding: 1rem; color: #6c757d; font-size: 0.95rem;" class="text-end"><i class="bi bi-gear-fill me-2"></i> Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
