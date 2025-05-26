@@ -104,4 +104,10 @@ Route::middleware(['auth', 'adminMiddleware'])->group(function () {
     Route::put('admin/berita/{berita}', [BeritaController::class, 'update'])->name('admin.berita.update');
     Route::delete('admin/berita/{berita}', [BeritaController::class, 'destroy'])->name('admin.berita.destroy');
 
+    Route::get('admin/forum', [ForumController::class, 'adminIndex'])->name('admin.forum.index');
+    Route::get('admin/forum/{id}', [ForumController::class, 'adminShow'])->name('admin.forum.show');
+    Route::delete('admin/forum/{id}', [ForumController::class, 'adminDestroy'])->name('admin.forum.destroy');
+    Route::delete('admin/forum/comment/{id}', [ForumController::class, 'adminDestroyComment'])->name('admin.comment.destroy');
+
+
 });

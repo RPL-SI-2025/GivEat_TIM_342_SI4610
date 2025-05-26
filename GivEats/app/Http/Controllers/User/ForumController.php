@@ -12,15 +12,22 @@ use Illuminate\Support\Carbon;
 
 class ForumController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+
         $topics = ForumTopic::with(['user', 'likes', 'comments'])
-                    ->withCount(['likes', 'comments'])
-                    ->latest()
-                    ->paginate(10);
-                    
-        return view('user.forum.index', compact('topics'));
+            ->withCount(['likes', 'comments'])
+            ->when($search, function ($query, $search) {
+                return $query->where('title', 'like', '%' . $search . '%')
+                            ->orWhere('content', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('user.forum.index', compact('topics', 'search'));
     }
+
 
     public function show($id)
     {
@@ -65,14 +72,15 @@ class ForumController extends Controller
         $topic = ForumTopic::findOrFail($id);
 
         if (now()->diffInMinutes($topic->created_at) > 30) {
-            return redirect()->route('forum.index')->with('error', 'Batas waktu untuk mengedit postingan telah lewat.');
+            return redirect()->route('forum.show', $topic->id)->with('error', 'Batas waktu untuk mengedit postingan telah lewat.');
         }
 
         $topic->update([
+            'title' => $request->title,
             'content' => $request->content,
         ]);
 
-        return redirect()->route('forum.index')->with('success', 'Postingan berhasil diperbarui!');
+        return redirect()->route('forum.show', $topic->id)->with('success', 'Postingan berhasil diperbarui!');
     }
 
     public function destroy($id)
@@ -214,6 +222,34 @@ class ForumController extends Controller
         }
 
         return back()->with('success', 'Like dihapus');
+    }
+
+    public function adminIndex()
+    {
+        $topics = ForumTopic::with('user')->latest()->paginate(10);
+        return view('admin.forum.index', compact('topics'));
+    }
+
+    public function adminShow($id)
+    {
+        $topic = ForumTopic::with('comments.user')->findOrFail($id);
+        return view('admin.forum.show', compact('topic'));
+    }
+
+    public function adminDestroy($id)
+    {
+        $topic = ForumTopic::findOrFail($id);
+        $topic->delete();
+
+        return redirect()->route('admin.forum.index')->with('success', 'Topik berhasil dihapus.');
+    }
+
+    public function adminDestroyComment($id)
+    {
+        $comment = ForumComment::findOrFail($id);
+        $comment->delete();
+
+        return back()->with('success', 'Komentar berhasil dihapus.');
     }
     
 }

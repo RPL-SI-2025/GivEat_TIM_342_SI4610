@@ -20,6 +20,9 @@
                 <a href="{{ route('admin.berita.index') }}" class="nav-link mb-2 {{ request()->routeIs('admin.berita.index') ? 'active' : '' }}">
                     <i class="bi bi-newspaper me-2"></i> Input Berita
                 </a>
+                <a href="{{ route('admin.forum.index') }}" class="nav-link mb-2 {{ request()->routeIs('admin.forum.index') ? 'active' : '' }}">
+                    <i class="bi bi-newspaper me-2"></i> Manage Forum
+                </a>
             </div>
         </div>
 

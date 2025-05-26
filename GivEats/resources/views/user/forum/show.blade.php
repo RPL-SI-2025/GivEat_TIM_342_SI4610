@@ -19,11 +19,23 @@
             <div class="text-gray-700 leading-relaxed whitespace-pre-line">{{ $topic->content }}</div>
 
             @if (Auth::id() === $topic->user_id && $topic->created_at->gt(now()->subMinutes(30)))
-                <div class="mt-4 flex space-x-2">
-                    <a href="{{ route('forum.edit', $topic->id) }}" class="text-blue-600 hover:underline">Edit</a>
+                <div class="flex items-center gap-4 mt-4">
+                    <a href="{{ route('forum.edit', $topic->id) }}" 
+                       class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>Edit</a>
                     <form action="{{ route('forum.destroy', $topic->id) }}" method="POST" onsubmit="return confirm('Hapus topik ini?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:underline">Hapus</button>
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" id="hapus-topik" class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1" dusk="delete-topik-{{ $comment->id }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                            </svg>
+                            Hapus
+                        </button>
                     </form>
                 </div>
             @endif
@@ -34,14 +46,12 @@
 
         @forelse($topic->comments as $comment)
             <div class="flex items-start gap-3 mb-4 pb-4 border-b border-gray-200" id="comment-{{ $comment->id }}">
-                <!-- Avatar -->
                 <div class="flex-shrink-0">
                     <img src="{{ $comment->user->avatar_url ?? 'https://www.gravatar.com/avatar/' . md5(strtolower(trim($comment->user->email))) . '?d=mp' }}" 
                          class="w-10 h-10 rounded-full object-cover" 
                          alt="{{ $comment->user->name }}">
                 </div>
 
-                <!-- Konten Komentar -->
                 <div class="flex-grow">
                     <div class="flex items-center gap-2 mb-1">
                         <span class="font-medium text-gray-900">{{ $comment->user->name }}</span>
@@ -53,12 +63,10 @@
                         </span>
                     </div>
 
-                    <!-- Display Mode -->
                     <div class="comment-display" id="display-{{ $comment->id }}">
                         <p class="text-gray-800 whitespace-pre-line">{{ $comment->komentar }}</p>
                     </div>
 
-                    <!-- Edit Mode (Hidden Initially) -->
                     @if(Auth::id() === $comment->user_id)
                         <div class="comment-edit hidden" id="edit-{{ $comment->id }}">
                             <form method="POST" action="{{ route('forum.comment.update', $comment->id) }}" 
@@ -76,31 +84,32 @@
                         </div>
                     @endif
 
-                    <!-- Action Buttons -->
                     <div class="flex items-center gap-4 mt-2">
-                        @if(Auth::check())
-                                                     
-                            @if(Auth::id() === $comment->user_id && $comment->created_at->gt(now()->subMinutes(30)))
-                                <button onclick="enableEditMode('{{ $comment->id }}')" 
-                                        class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
+                        @if(Auth::check() && Auth::id() === $comment->user_id && $comment->created_at->gt(now()->subMinutes(30)))
+                            <button onclick="enableEditMode('{{ $comment->id }}')" 
+                                    class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1"
+                                    id="edit-comment-{{ $comment->id }}">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                </svg>
+                                Edit
+                            </button>
+
+
+                            <form action="{{ route('forum.comment.destroy', $comment->id) }}" method="POST" 
+                                  class="inline" onsubmit="return confirm('Hapus komentar ini?')">
+                                @csrf 
+                                @method('DELETE')
+                                <button type="submit" class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1" 
+                                        id="delete-comment-{{ $comment->id }}">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                                     </svg>
-                                    Edit
+                                    Hapus
                                 </button>
-                                
-                                <form action="{{ route('forum.comment.destroy', $comment->id) }}" method="POST" 
-                                      class="inline" onsubmit="return confirm('Hapus komentar ini?')">
-                                    @csrf 
-                                    @method('DELETE')
-                                    <button type="submit" class="text-sm text-gray-600 hover:text-gray-900 flex items-center gap-1">
-                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                                        </svg>
-                                        Hapus
-                                    </button>
-                                </form>
-                            @endif
+                            </form>
                         @endif
                     </div>
                 </div>
@@ -133,26 +142,23 @@
         function enableEditMode(commentId) {
             document.getElementById(`display-${commentId}`).classList.add('hidden');
             document.getElementById(`edit-${commentId}`).classList.remove('hidden');
-            
-            // Auto-focus textarea
             const textarea = document.querySelector(`#edit-${commentId} textarea`);
             textarea.focus();
             textarea.selectionStart = textarea.value.length;
         }
-        
+
         function disableEditMode(commentId) {
             document.getElementById(`display-${commentId}`).classList.remove('hidden');
             document.getElementById(`edit-${commentId}`).classList.add('hidden');
         }
-        
-        // Handle form submission
+
         document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.comment-edit-form').forEach(form => {
                 form.addEventListener('submit', function(e) {
                     e.preventDefault();
                     const form = e.target;
                     const commentId = form.id.split('-')[1];
-                    
+
                     fetch(form.action, {
                         method: 'POST',
                         headers: {
@@ -164,21 +170,16 @@
                         body: new URLSearchParams(new FormData(form))
                     })
                     .then(response => {
-                        if (!response.ok) {
-                            throw new Error('Network response was not ok');
-                        }
+                        if (!response.ok) throw new Error('Network response was not ok');
                         return response.json();
                     })
                     .then(data => {
                         if (data.success) {
                             document.querySelector(`#display-${commentId} p`).textContent = data.komentar;
                             disableEditMode(commentId);
-                            
-                            // Update timestamp to show edited
                             const timestamp = document.querySelector(`#comment-${commentId} .text-xs`);
                             if (timestamp) {
                                 timestamp.innerHTML = 'Baru saja <span class="text-gray-400">(diedit)</span>';
-                                // Update to relative time after 1 minute
                                 setTimeout(() => {
                                     timestamp.textContent = '1 menit yang lalu (diedit)';
                                 }, 60000);
