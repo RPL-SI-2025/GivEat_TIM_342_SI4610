@@ -45,7 +45,7 @@
 										<label class="block text-gray-700">Password</label>
 										<input type="password" id="password" name="password"
 												class="w-full rounded-full border px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-green-600"
-												placeholder="JohnDoe123" required>
+												placeholder="Masukkan password anda" required>
 										<button type="button" onclick="togglePassword('password', 'togglePasswordIcon')"
 												class="absolute right-3 top-9 text-gray-600">
 												<svg id="togglePasswordIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill [Rest of SVG paths
