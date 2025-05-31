@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Partner;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
@@ -17,12 +18,12 @@ class LandingPageController extends Controller
             'statistic_penerima' => 5000,
             'statistic_distribusi' => 3000,
             'misi_title' => 'Misi Kami',
-            'misi_subtitle' => 'Mengurangi pemborosan makanan dan berbagi kepada yang membutuhkan.',
-            'misi_komitmen' => 'Kami berkomitmen untuk mengurangi pemborosan makanan.',
-            'misi_dampak' => 'Memberikan dampak positif bagi masyarakat sekitar.',
-            'misi_pentingnya' => 'Penting untuk menjaga keberlanjutan bumi.',
-            'misi_tekad' => 'Bersama kita bisa membuat perubahan.',
-            'misi_visi' => 'Menjadi jembatan antara yang berlebih dan yang membutuhkan.',
+            'misi_subtitle' => 'Misi kami adalah memastikan tidak ada makanan yang terbuang sia-sia, dan tidak ada perut yang kelaparan. Dengan GivEat, berbagi jadi lebih mudah!',
+            'misi_komitmen' => 'GivEat hadir untuk mengurangi kelaparan dan pemborosan makanan dengan mendistribusikan makanan berlebih kepada mereka yang membutuhkan. Kami percaya bahwa setiap makanan yang terselamatkan bisa menjadi harapan bagi sesama.',
+            'misi_dampak' => 'Dengan GivEat, setiap makanan berlebih dapat mengurangi kelaparan, mengurangi limbah, dan menciptakan komunitas yang lebih peduli. Setiap donasi membawa perubahan nyata bagi mereka yang membutuhkan',
+            'misi_pentingnya' => 'Jutaan ton makanan terbuang setiap tahun, sementara banyak orang masih kelaparan. GivEat hadir untuk memastikan makanan berlebih tidak sia-sia, tetapi sampai ke mereka yang membutuhkan',
+            'misi_tekad' => 'Kami berkomitmen untuk membangun ekosistem berbagi makanan yang mudah, aman, dan berdampak. Dengan teknologi dan kolaborasi, kami memastikan makanan sampai ke tangan yang tepat',
+            'misi_visi' => 'Dunia tanpa pemborosan makanan dan kelaparan. GivEat ingin menciptakan masa depan di mana setiap makanan berlebih menjadi berkah bagi sesama',
             'tentang_title' => 'Tentang GivEat',
             'tentang_subtitle' => 'GivEat adalah platform yang menghubungkan donatur dan penerima makanan.',
             'tentang_siapa' => 'Kami adalah tim yang peduli dengan masalah pemborosan makanan.',
@@ -36,5 +37,29 @@ class LandingPageController extends Controller
 
         // Mengirim data ke view
         return view('landing', compact('content'));
+    }
+
+    public function mitra()
+    {
+        return view('mitra');
+    }
+
+    public function partnerStore(Request $request)
+    {
+        $status = "success";
+        try {
+            Partner::create([
+                'name' =>$request->name,
+                'email' =>$request->email,
+                'phone' =>$request->phone,
+                'address' =>$request->address,
+            ]);
+            $message = "Berhasil menyimpan data";
+        } catch (\Throwable $th) {
+            $status = "failed";
+            $message = "Gagal menyimpan data mungkin coba lagi.";
+        }
+
+        return redirect()->back()->with($status, $message);
     }
 }
