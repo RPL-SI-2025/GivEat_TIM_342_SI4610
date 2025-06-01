@@ -10,7 +10,7 @@ class FaqController extends Controller
 {
     public function index()
     {
-        $faqs = Faq::all(); // Fix: Changed from Faq.all() to Faq::all()
+        $faqs = Faq::all();
         return view('admin.faq.index', compact('faqs'));
     }
 
@@ -30,4 +30,29 @@ class FaqController extends Controller
         return redirect()->route('admin.faq.index')->with('success', 'FAQ created successfully');
     }
 
+    public function edit(Faq $faq)
+    {
+        return view('admin.faq.edit', compact('faq'));
+    }
+
+    public function update(Request $request, Faq $faq)
+    {
+        $request->validate([
+            'question' => 'required',
+            'answer' => 'required',
+        ]);
+
+        // Update FAQ
+        $faq->question = $request->question;
+        $faq->answer = $request->answer;
+        $faq->save(); // Use save() instead of update()
+
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil diperbarui.');
+    }
+
+    public function destroy(Faq $faq)
+    {
+        $faq->delete();
+        return redirect()->route('admin.faq.index')->with('success', 'FAQ berhasil dihapus.');
+    }
 }

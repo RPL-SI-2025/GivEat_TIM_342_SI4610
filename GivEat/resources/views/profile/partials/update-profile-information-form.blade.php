@@ -13,9 +13,21 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
+
+        <div>
+            @if ($user->image)
+                <div class="mt-4">
+                    <p class="text-sm text-gray-700">Foto saat ini:</p>
+                    <img src="{{ asset('storage/' . $user->image) }}" alt="Profile Photo" class="mt-2 w-32 h-32 object-cover rounded-full border">
+                </div>
+            @endif
+            <x-input-label for="image" :value="__('Foto Profil')" />
+            <x-text-input id="image" name="image" type="file" class="mt-1 block w-full" accept="image/*" />
+            <x-input-error class="mt-2" :messages="$errors->get('image')" />
+        </div>
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -45,6 +57,22 @@
                     @endif
                 </div>
             @endif
+        </div>
+
+        <div>
+            <x-input-label for="gender" :value="__('gender')" />
+            <select id="gender" name="gender" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+                <option value="">Pilih jenis kelamin</option>
+                <option value="Laki-laki" {{ old('gender', $user->gender) === 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                <option value="Perempuan" {{ old('gender', $user->gender) === 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('gender')" />
+        </div>
+
+        <div>
+            <x-input-label for="city" :value="__('city')" />
+            <x-text-input id="city" name="city" type="text" class="mt-1 block w-full" :value="old('city', $user->city)" autocomplete="address-level2" />
+            <x-input-error class="mt-2" :messages="$errors->get('city')" />
         </div>
 
         <div class="flex items-center gap-4">
