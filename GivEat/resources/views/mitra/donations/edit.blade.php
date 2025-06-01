@@ -200,7 +200,7 @@
                                     <i class="bi bi-arrow-left"></i> Kembali
                                 </a>
                                 <button type="submit" class="btn btn-primary rounded-pill px-4">
-                                    <i class="bi bi-check-lg"></i> Simpan Perubahan
+                                    <i class="bi bi-check-lg"></i>Simpan Perubahan
                                 </button>
                             </div>
                         </form>

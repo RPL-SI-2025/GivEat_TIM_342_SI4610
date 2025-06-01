@@ -6,7 +6,7 @@
         :root {
             --giveat-primary: #006837;
             --giveat-text: #374151;
-        }
+        } 
         
         .form-control,
         .form-select {
