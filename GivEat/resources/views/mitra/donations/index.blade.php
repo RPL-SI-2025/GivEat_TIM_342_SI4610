@@ -1,19 +1,12 @@
 <x-app-layout>
     @push('styles')
     <style>
-        /* Soft background colors */
+        /* Soft background colors for category badges */
         .bg-soft-primary { background-color: rgba(13, 110, 253, 0.1) !important; }
         .bg-soft-info { background-color: rgba(13, 202, 240, 0.1) !important; }
         .bg-soft-warning { background-color: rgba(255, 193, 7, 0.1) !important; }
         .bg-soft-success { background-color: rgba(25, 135, 84, 0.1) !important; }
         .bg-soft-secondary { background-color: rgba(108, 117, 125, 0.1) !important; }
-        
-        /* Text colors */
-        .text-primary { color: #0d6efd !important; }
-        .text-info { color: #0dcaf0 !important; }
-        .text-warning { color: #ffc107 !important; }
-        .text-success { color: #198754 !important; }
-        .text-secondary { color: #6c757d !important; }
     </style>
     @endpush
     <div class="container-fluid py-4" style="background: #FBFFFB;padding: 30px; min-height: 100vh;">
@@ -153,40 +146,40 @@
                     <div class="text-muted">
                         Menampilkan <span class="fw-semibold">{{ $donations->firstItem() }}</span> sampai <span class="fw-semibold">{{ $donations->lastItem() }}</span> dari <span class="fw-semibold">{{ $donations->total() }}</span> data
                     </div>
-                    <nav aria-label="Page navigation">
-                        <ul class="pagination mb-0">
+                    <nav aria-label="Page navigation" style="margin: 0; padding: 0;">
+                        <ul class="pagination mb-0" style="display: flex; padding-left: 0; list-style: none; margin: 0;">
                             {{-- Previous Page Link --}}
                             @if ($donations->onFirstPage())
-                                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
-                                    <span class="page-link" aria-hidden="true">&lsaquo;</span>
+                                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')" style="margin: 0 2px;">
+                                    <span class="page-link" aria-hidden="true" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #6c757d; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none;">&lsaquo;</span>
                                 </li>
                             @else
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $donations->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                                <li class="page-item" style="margin: 0 2px;">
+                                    <a class="page-link" href="{{ $donations->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #006837 !important; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none; transition: all 0.2s ease-in-out;">&lsaquo;</a>
                                 </li>
                             @endif
 
                             {{-- Pagination Elements --}}
                             @foreach ($donations->getUrlRange(1, $donations->lastPage()) as $page => $url)
                                 @if ($page == $donations->currentPage())
-                                    <li class="page-item active" aria-current="page">
-                                        <span class="page-link">{{ $page }}</span>
+                                    <li class="page-item active" aria-current="page" style="margin: 0 2px;">
+                                        <span class="page-link" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #fff !important; background-color: #006837 !important; border-color: #006837 !important; border-radius: 4px; text-decoration: none; z-index: 3;">{{ $page }}</span>
                                     </li>
                                 @else
-                                    <li class="page-item">
-                                        <a class="page-link" href="{{ $url }}">{{ $page }}</a>
+                                    <li class="page-item" style="margin: 0 2px;">
+                                        <a class="page-link" href="{{ $url }}" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #006837 !important; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none; transition: all 0.2s ease-in-out;">{{ $page }}</a>
                                     </li>
                                 @endif
                             @endforeach
 
                             {{-- Next Page Link --}}
                             @if ($donations->hasMorePages())
-                                <li class="page-item">
-                                    <a class="page-link" href="{{ $donations->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
+                                <li class="page-item" style="margin: 0 2px;">
+                                    <a class="page-link" href="{{ $donations->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #006837 !important; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none; transition: all 0.2s ease-in-out;">&rsaquo;</a>
                                 </li>
                             @else
-                                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
-                                    <span class="page-link" aria-hidden="true">&rsaquo;</span>
+                                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')" style="margin: 0 2px;">
+                                    <span class="page-link" aria-hidden="true" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #6c757d; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none;">&rsaquo;</span>
                                 </li>
                             @endif
                         </ul>
