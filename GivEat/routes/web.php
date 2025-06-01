@@ -28,6 +28,8 @@ Route::get('/', function () {
 });
 
 Route::get('/', [LandingPageController::class, 'index']);
+Route::get('/mitra', [LandingPageController::class, 'mitra']);
+Route::post('/mitra/request', [LandingPageController::class, 'partnerStore'])->name('mitra.request');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
