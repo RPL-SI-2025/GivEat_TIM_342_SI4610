@@ -61,9 +61,9 @@
                             <th scope="col" style="width: 60px; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;">Gambar</th>
                             <th scope="col" style="width: 15%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;">Nama</th>
                             <th scope="col" style="width: 10%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;">Kategori</th>
-                            <th scope="col" style="width: 25%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;">Deskripsi</th>
-                            <th scope="col" style="width: 8%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;" class="text-center">Porsi</th>
-                            <th scope="col" style="width: 12%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;">Waktu</th>
+                            <th scope="col" style="width: 20%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem; max-width: 120px;">Deskripsi</th>
+                            <th scope="col" style="width: 5%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;" class="text-center">Porsi</th>
+                            <th scope="col" style="width: 10%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;">Waktu</th>
                             <th scope="col" style="width: 15%; padding: 1rem; background-color: #f8f9fa; font-weight: 500; color: #6c757d; font-size: 0.95rem;" class="text-end">Aksi</th>
                         </tr>
                     </thead> 
@@ -101,12 +101,12 @@
                                     $badgeStyle = $categoryStyles[$categoryName] ?? 'background-color: #F5F5F5; color: #212121;';
                                 @endphp
                                 <td class="align-middle" style="vertical-align: middle; padding: 1rem;">
-                                    <span class="badge rounded-pill" style="font-size: 0.875rem; padding: 0.4rem 0.9rem; border: none; font-weight: 500; {{ $badgeStyle }}">
+                                    <span class="badge rounded-pill" style="font-size: 0.875rem; border: none; font-weight: 500; {{ $badgeStyle }}">
                                         {{ $categoryName }}
                                     </span>
                                 </td>
                                 <td class="align-middle" style="vertical-align: middle; padding: 1rem;">
-                                    <div class="text-muted text-truncate" style="max-width: 300px;" title="{{ $donation->description }}">
+                                    <div class="text-muted text-truncate" style="max-width: 250px;" title="{{ $donation->description }}">
                                         {{ $donation->description }}
                                     </div>
                                 </td>

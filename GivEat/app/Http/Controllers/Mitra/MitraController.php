@@ -11,26 +11,68 @@ class MitraController extends Controller
 {
     public function index()
     {
-        // Get statistics
+        // Get the authenticated user (mitra)
+        $user = auth()->user();
+        
+        // Get donations by this partner
+        
+        // Get recent claim transactions for these donations
+        // Get all claim transactions for this partner's donations
+        $claimTransactions = \App\Models\ClaimTransaction::all();
+
+        // Calculate statistics
+        $totalTransactions = $claimTransactions->count();
+        $totalReceivers = $claimTransactions->unique('user_id')->count();
+        $totalKg = $totalTransactions * 0.5; // 0.5kg per portion
+        
+        // Debug: Log the donation IDs and transaction count
+        \Log::info('Dashboard Stats', [
+            'partner_id' => $user->id,
+            'total_transactions' => $totalTransactions,
+            'claim_transactions' => $claimTransactions->toArray()
+        ]);
+        
+        // Get recent claim transactions for these donations
+        $recentTransactions = $claimTransactions->sortByDesc('claimed_at')->take(5);
+            
+        // Status counts
+        $statusCounts = [
+            'done' => $claimTransactions->where('status', 'done')->count(),
+            'pending' => $claimTransactions->where('status', 'pending')->count(),
+            'not_taken' => $claimTransactions->where('status', 'not_taken')->count(),
+        ];
+        
+        // Prepare stats for the cards
+        // Get total orders count (all claim transactions for this partner)
+        $totalOrders = \App\Models\ClaimTransaction::count();
+        
         $stats = [
-            'distributed' => Donation::where('status', 'completed')->count(),
-            'recipients' => Donation::where('status', 'completed')->sum('portion'),
-            'saved' => Donation::where('status', 'completed')->count() * 0.5, // Assuming 0.5kg per donation
+            'distributed' => $totalKg,           // Total kg of food distributed
+            'recipients' => $totalReceivers,    // Total unique users who received food
+            'saved' => $totalKg,                // Total kg of food saved (portions * 0.5kg)
+            'total_orders' => $totalOrders      // Total number of all orders
         ];
 
-        // Get recent orders
-        $recentOrders = Donation::latest()
-            ->take(5)
+        $availableDonations = Donation::where('status', 'available')
+            ->with(['partner', 'category'])
+            ->latest()
+            ->take(4)
             ->get();
 
-        // Get donation status counts
-        $statusCounts = [
-            'completed' => Donation::where('status', 'completed')->count(),
-            'pending' => Donation::where('status', 'claimed')->count(),
-            'unclaimed' => Donation::where('status', 'available')->count(),
-        ];
+        // Get 5 most recent orders for the dashboard table
+        $orders = \App\Models\ClaimTransaction::with(['donation', 'user'])
+            ->latest('claimed_at')
+            ->take(5) // Show last 5 orders
+            ->get();
 
-        return view('mitra.dashboard', compact('stats', 'recentOrders', 'statusCounts'));
+        return view('mitra.dashboard', [
+            'stats' => $stats,
+            'recentOrders' => $recentTransactions,
+            'orders' => $orders, // Add orders to the view
+            'statusCounts' => $statusCounts,
+            'totalTransactions' => $totalTransactions,
+            'availableDonations' => $availableDonations,
+        ]);
     }
 
     // Halaman Riwayat

@@ -136,16 +136,49 @@
                         </tbody>
                     </table>
                 </div>
-                @if ($orders->hasMorePages())
-                <div class="d-flex justify-content-center mt-4">
-                    <a href="{{ $orders->nextPageUrl() }}" class="btn btn-success rounded-pill px-5 fw-regular">Next</a>
-                </div>
-                @endif
-                <div class="d-flex justify-content-between align-items-center mt-3">
-                    <div>Halaman {{ $orders->currentPage() }} dari {{ $orders->lastPage() }}</div>
-                    <div>
-                        {{ $orders->links() }}
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center px-4 py-3 border-top">
+                    <div class="text-muted">
+                        Menampilkan <span class="fw-semibold">{{ $orders->firstItem() }}</span> sampai <span class="fw-semibold">{{ $orders->lastItem() }}</span> dari <span class="fw-semibold">{{ $orders->total() }}</span> data
                     </div>
+                    <nav aria-label="Page navigation" style="margin: 0; padding: 0;">
+                        <ul class="pagination mb-0" style="display: flex; padding-left: 0; list-style: none; margin: 0;">
+                            {{-- Previous Page Link --}}
+                            @if ($orders->onFirstPage())
+                                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')" style="margin: 0 2px;">
+                                    <span class="page-link" aria-hidden="true" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #6c757d; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none;">&lsaquo;</span>
+                                </li>
+                            @else
+                                <li class="page-item" style="margin: 0 2px;">
+                                    <a class="page-link" href="{{ $orders->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #006837 !important; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none; transition: all 0.2s ease-in-out;">&lsaquo;</a>
+                                </li>
+                            @endif
+
+                            {{-- Pagination Elements --}}
+                            @foreach ($orders->getUrlRange(1, $orders->lastPage()) as $page => $url)
+                                @if ($page == $orders->currentPage())
+                                    <li class="page-item active" aria-current="page" style="margin: 0 2px;">
+                                        <span class="page-link" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #fff !important; background-color: #006837 !important; border-color: #006837 !important; border-radius: 4px; text-decoration: none; z-index: 3;">{{ $page }}</span>
+                                    </li>
+                                @else
+                                    <li class="page-item" style="margin: 0 2px;">
+                                        <a class="page-link" href="{{ $url }}" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #006837 !important; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none; transition: all 0.2s ease-in-out;">{{ $page }}</a>
+                                    </li>
+                                @endif
+                            @endforeach
+
+                            {{-- Next Page Link --}}
+                            @if ($orders->hasMorePages())
+                                <li class="page-item" style="margin: 0 2px;">
+                                    <a class="page-link" href="{{ $orders->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #006837 !important; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none; transition: all 0.2s ease-in-out;">&rsaquo;</a>
+                                </li>
+                            @else
+                                <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')" style="margin: 0 2px;">
+                                    <span class="page-link" aria-hidden="true" style="position: relative; display: block; padding: 0.5rem 0.9rem; margin-left: -1px; line-height: 1.25; color: #6c757d; background-color: #fff; border: 1px solid #dee2e6; border-radius: 4px; text-decoration: none;">&rsaquo;</span>
+                                </li>
+                            @endif
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
