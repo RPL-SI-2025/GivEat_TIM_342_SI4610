@@ -121,17 +121,19 @@
                                     </div>
                                 </td>
                                 <td class="align-middle text-end" style="vertical-align: middle; padding: 1rem;">
-                                    <a href="{{ route('donations.show', $donation) }}" class="btn btn-sm btn-outline-primary me-1" title="Lihat Detail" style="font-size: 0.875rem; border-color: #007bff; color: #007bff;">
+                                    <a href="{{ route('donations.show', $donation) }}" class="btn btn-sm me-1 d-inline-flex align-items-center justify-content-center" title="Lihat Detail" 
+                                       style="width: 36px; height: 36px; font-size: 0.875rem; background-color: rgba(0, 104, 55, 0.1); color: #006837; border: none; border-radius: 0.5rem;">
                                         <i class="bi bi-eye"></i>
                                     </a>
-                                    <a href="{{ route('donations.edit', $donation) }}" class="btn btn-sm btn-outline-info me-1" dusk="edit-donation-button" title="Edit" style="font-size: 0.875rem; border-color: #17a2b8; color: #17a2b8;">
-                                        <i class="bi bi-pencil"></i> 
+                                    <a href="{{ route('donations.edit', $donation) }}" class="btn btn-sm me-1 d-inline-flex align-items-center justify-content-center" dusk="edit-donation-button" title="Edit" 
+                                       style="width: 36px; height: 36px; font-size: 0.875rem; background-color: rgba(23, 162, 184, 0.1); color: #0d6efd; border: none; border-radius: 0.5rem;">
+                                        <i class="bi bi-pencil"></i>
                                     </a>
                                     <form action="{{ route('donations.destroy', $donation) }}" method="POST" class="d-inline" dusk="delete-donation-button">
                                         @csrf
                                         @method('DELETE')
-                                        <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" 
-                                                style="font-size: 0.875rem; border-color: #dc3545; color: #dc3545;" 
+                                        <button type="submit" class="btn btn-sm d-inline-flex align-items-center justify-content-center" title="Hapus" 
+                                                style="width: 36px; height: 36px; font-size: 0.875rem; background-color: rgba(220, 53, 69, 0.1); color: #dc3545; border: none; border-radius: 0.5rem;" 
                                                 onclick="return confirm('Apakah Anda yakin ingin menghapus donasi ini?')">
                                             <i class="bi bi-trash"></i>
                                         </button>
