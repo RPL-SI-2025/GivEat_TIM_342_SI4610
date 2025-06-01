@@ -39,6 +39,9 @@
                     <x-nav-link :href="route('reviews.index')" :active="request()->routeIs('reviews.index')" class="nav-link">
                         {{ __('Review') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('claim.history')" :active="request()->routeIs('claim.history')" class="nav-link">
+                        {{ __('Riwayat') }}
+                    </x-nav-link>
                     <!-- Tambahkan menu lain di sini jika perlu -->
                 </div>
             </div>

@@ -64,4 +64,17 @@ class ClaimDonationController extends Controller
             ->get();
         return view('user.claim_donations.foodclaim', compact('donation', 'otherDonations'));
     }
+
+    public function showClaimHistory(Request $request)
+    {
+        $user = $request->user();  // Ambil pengguna yang sedang login
+        
+        // Ambil semua transaksi klaim yang dimiliki oleh pengguna beserta data donasi dan partner
+        $claimHistory = \App\Models\ClaimTransaction::where('user_id', $user->id)
+            ->with(['donation.partner'])  // Menyertakan partner dari donation
+            ->orderByDesc('claimed_at')  // Urutkan berdasarkan tanggal klaim (terbaru)
+            ->paginate(8);  // Paginasi dengan 8 item per halaman
+            
+        return view('user.claim_donations.claim_history', compact('claimHistory'));
+    }
 }

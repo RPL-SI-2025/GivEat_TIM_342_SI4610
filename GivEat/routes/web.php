@@ -35,9 +35,11 @@ Route::middleware(['auth', 'userMiddleware'])->group(function () {
     Route::get('/claim/food/{id}', [ClaimDonationController::class, 'show'])->name('claim.food');
     Route::post('/claim/food/{id}', [ClaimDonationController::class, 'store'])->name('claim.food.store');
     Route::get('/claim/food/{id}/success', [ClaimDonationController::class, 'success'])->name('claim.success');
+    Route::get('/claim-history', [ClaimDonationController::class, 'showClaimHistory'])->name('claim.history');
 
     // Dashboard
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/makanan-tersedia', [DashboardController::class, 'availableFoods'])->name('foods.available');
 
     // Berita
     Route::get('/berita', [BeritaController::class, 'index'])->name('berita.index');

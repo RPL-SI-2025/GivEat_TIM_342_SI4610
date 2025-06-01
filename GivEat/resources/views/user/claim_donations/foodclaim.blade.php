@@ -144,7 +144,18 @@
         background: #E0E7FF;
         color: #6366F1;
     }
-
+    .tag-snack {
+        background:rgb(255, 219, 219);
+        color:rgba(255, 0, 0, 0.77);
+    }
+    .tag-buah {
+        background:rgb(253, 255, 218);
+        color:rgb(255, 153, 0);
+    }
+    .tag-sayur {
+        background: #F1F8E9;
+        color: #33691E;
+    }
     .info-boxes {
         display: flex;
         gap: 20px;
@@ -397,6 +408,12 @@ untdown" data-pickup="{{ $donation->pickup_time }}"></span></span>
             <span class="tag-makanan">{{ $donation->category->name }}</span>
         @elseif(str_contains($cat, 'minuman'))
             <span class="tag-minuman">{{ $donation->category->name }}</span>
+        @elseif(str_contains($cat, 'snack'))
+            <span class="tag-snack">{{ $donation->category->name }}</span>
+        @elseif(str_contains($cat, 'buah'))
+            <span class="tag-buah">{{ $donation->category->name }}</span>
+        @elseif(str_contains($cat, 'sayur'))
+            <span class="tag-sayur">{{ $donation->category->name }}</span>
         @else
             <span class="badge">{{ $donation->category->name }}</span>
         @endif
