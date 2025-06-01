@@ -13,7 +13,45 @@ class DonationController extends Controller
     // Menampilkan semua donasi di halaman web
     public function index()
     {
-        $donations = Donation::with(['partner', 'category'])->get();
+        // Set timezone ke Asia/Jakarta untuk memastikan konsistensi
+        date_default_timezone_set('Asia/Jakarta');
+        
+        $query = Donation::with(['partner', 'category']);
+        
+        // Debug: Tampilkan waktu saat ini untuk verifikasi
+        $now = now();
+        $todayStart = now()->startOfDay();
+        $todayEnd = now()->endOfDay();
+        
+        // Filter berdasarkan tanggal
+        if (request('date_filter') === 'today') {
+            $query->whereBetween('created_at', [$todayStart, $todayEnd]);
+        } elseif (request('date_filter') === 'past') {
+            $query->where('created_at', '<', $todayStart);
+        }
+        
+        // Filter berdasarkan status jika ada
+        if (request('status')) {
+            $query->where('status', request('status'));
+        }
+        
+        // Gunakan pagination dengan 10 item per halaman
+        $donations = $query->latest()->paginate(10)->withQueryString();
+        
+        // Debug: Log informasi penting
+        \Log::info('Donation Query Debug:', [
+            'timezone' => date_default_timezone_get(),
+            'current_time' => $now->toDateTimeString(),
+            'today_start' => $todayStart->toDateTimeString(),
+            'today_end' => $todayEnd->toDateTimeString(),
+            'date_filter' => request('date_filter'),
+            'query' => $query->toSql(),
+            'bindings' => $query->getBindings(),
+            'result_count' => $donations->total(),
+            'current_page' => $donations->currentPage(),
+            'last_page' => $donations->lastPage()
+        ]);
+        
         return view('mitra.donations.index', compact('donations'));
     }
 
@@ -96,7 +134,7 @@ class DonationController extends Controller
         // Check if donation is claimed
         if ($donation->status !== 'available') {
             return redirect()->route('mitra.donations.index')
-                ->with('error', 'Donasi tidak bisa dihapus karena sudah diklaim oleh relawan/penerima');
+                ->with('error', 'Donasi tidak bisa dihapus karena sudah diklaim oleh penerima');
         }
 
         // Delete the image if exists

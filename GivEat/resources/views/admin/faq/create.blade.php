@@ -100,7 +100,7 @@
                                     <i class="bi bi-arrow-left"></i> Batal
                                 </a>
                                 <button type="submit" class="btn btn-primary rounded-pill px-4" dusk="submit-faq">
-                                    <i class="bi bi-plus-lg"></i> Simpan FAQ
+                                    <i class="bi bi-plus-lg"></i>Simpan FAQ
                                 </button>
                             </div>
                         </form>

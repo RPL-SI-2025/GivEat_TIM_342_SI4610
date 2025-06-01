@@ -23,6 +23,9 @@
                 <a href="{{ route('admin.manajemenmitra.index') }}" class="nav-link mb-2 {{ request()->routeIs('admin.manajemenmitra.index') ? 'active' : '' }}">
                     <i class="bi bi-person-lines-fill me-2"></i> Manajemen Mitra
                 </a>
+                <a href="{{ route('admin.forum.index') }}" class="nav-link mb-2 {{ request()->routeIs('admin.forum.index') ? 'active' : '' }}">
+                    <i class="bi bi-newspaper me-2"></i> Manage Forum
+                </a>
             </div>
         </div>
 

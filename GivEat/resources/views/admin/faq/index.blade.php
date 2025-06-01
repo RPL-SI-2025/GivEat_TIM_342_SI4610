@@ -20,7 +20,7 @@
                 <p class="text-muted mb-0" style="font-size: 0.875rem;">Kelola pertanyaan umum dari pengguna</p>
             </div>
             <a href="{{ route('admin.faq.create') }}" class="btn btn-success rounded-pill px-4" style="font-weight: 500; background-color: #2cbb5c; border-color: #27ac5f;">
-                <i class="bi bi-plus-lg"></i> Tambah FAQ
+                <i class="bi bi-plus-lg"></i>Tambah FAQ
             </a>
         </div>
 
@@ -46,10 +46,10 @@
                                     </div>
                                 </td>
                                 <td class="align-middle text-end" style="padding: 1rem;">
-                                    <a href="{{ route('admin.faq.edit', $faq->id) }}" class="btn btn-sm btn-outline-info me-1" title="Edit" style="font-size: 0.875rem;">
+                                    <a href="{{ route('admin.faq.edit', $faq->id) }}" class="btn btn-sm btn-outline-info me-1" dusk="edit" title="Edit" style="font-size: 0.875rem;">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <form action="{{ route('admin.faq.destroy', $faq->id) }}" method="POST" class="d-inline" onsubmit="return confirm('Apakah Anda yakin ingin menghapus FAQ ini?')">
+                                    <form action="{{ route('admin.faq.destroy', $faq->id) }}" method="POST" class="d-inline" dusk="hapus" onsubmit="return confirm('Apakah Anda yakin ingin menghapus FAQ ini?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-sm btn-outline-danger" title="Hapus" style="font-size: 0.875rem;">

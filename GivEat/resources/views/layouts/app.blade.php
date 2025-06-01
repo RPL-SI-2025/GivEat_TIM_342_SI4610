@@ -9,8 +9,11 @@
 
     {{-- Fonts --}}
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+    <style>
+        html, body, * {
+            font-family: 'Poppins', Arial, sans-serif !important;
+        }
+    </style>
 
     {{-- Bootstrap Icons --}}
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -20,9 +23,10 @@
 
     {{-- Vite --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100 d-flex flex-column">
+    <div class="min-h-screen bg-white d-flex flex-column">
         {{-- Navigation --}}
         @if(Auth::user()->usertype === 'admin')
             @include('layouts.navigation.admin')
@@ -75,5 +79,6 @@
             transition: opacity 0.2s ease-in-out;
         }
     </style>
+    @stack('scripts')
 </body>
 </html>

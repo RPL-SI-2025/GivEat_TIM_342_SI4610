@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Donasi - GivEat</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body class="bg-green-50 font-sans">
+    <div class="flex min-h-screen">
+      <!-- Sidebar -->
+      <aside class="w-64 bg-white shadow-md">
+        <div class="p-6 flex items-center gap-2">
+          <img src="logo.png" alt="GivEat" class="w-25 h-10" />
+        </div>
+        <nav class="mt-8">
+          <ul class="space-y-2">
+            <li>
+              <a href="#" class="block py-2 px-6 hover:bg-green-100">Beranda</a>
+            </li>
+            <li>
+              <a
+                href="#"
+                class="block py-2 px-6 bg-green-100 text-green-700 font-medium"
+                >Donasi</a
+              >
+            </li>
+            <li>
+              <a href="#" class="block py-2 px-6 hover:bg-green-100">Review</a>
+            </li>
+            <li>
+              <a href="#" class="block py-2 px-6 hover:bg-green-100">Riwayat</a>
+            </li>
+          </ul>
+        </nav>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="flex-1 p-10">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+          <div>
+            <h1 class="text-2xl font-semibold text-green-800">Donasi</h1>
+            <p class="text-gray-600">Hai Robert, Mulai donasi sekarang!</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-gray-800 font-medium">Robert Julian</span>
+          </div>
+        </div>
+
+        <!-- Form Tambah Makanan -->
+        <div class="bg-white rounded-xl shadow-md p-6 mb-10">
+          <h2 class="text-lg font-semibold mb-4">Tambah Makanan</h2>
+          <form class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <input
+              type="text"
+              placeholder="Nama Makanan"
+              class="border p-2 rounded-md"
+            />
+            <select class="border p-2 rounded-md">
+              <option selected>Pilih Kategori</option>
+            </select>
+            <input
+              type="text"
+              placeholder="Deskripsi makanan"
+              class="border p-2 rounded-md col-span-1 md:col-span-2"
+            />
+            <input type="time" class="border p-2 rounded-md" />
+            <label
+              class="border-dashed border-2 border-gray-300 rounded-md p-4 text-center cursor-pointer"
+            >
+              <input type="file" class="hidden" />
+              <span class="text-gray-500">Pilih Gambar</span>
+            </label>
+            <div class="col-span-1 md:col-span-2 text-right">
+              <button
+                type="submit"
+                class="bg-green-700 text-white px-6 py-2 rounded-md hover:bg-green-800"
+              >
+                Tambah Makanan
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Donasi Hari Ini -->
+        <div>
+          <div class="flex justify-between items-center mb-4">
+            <h2 class="text-lg font-semibold">Donasi Hari Ini</h2>
+            <a href="#" class="text-sm text-green-600 hover:underline"
+              >Lihat Selengkapnya</a
+            >
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <!-- Card makanan -->
+            <div class="bg-white rounded-xl shadow p-4">
+              <img
+                src="makanan.png"
+                alt="Sop Ayam dan Sayur"
+                class="rounded-md mb-3"
+              />
+              <h3 class="font-semibold">Sop Ayam dan Sayur</h3>
+              <p class="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                <span>☕</span> 10 Porsi
+              </p>
+              <p class="text-sm text-gray-600 flex items-center gap-1">
+                <span>⏰</span> 30 menit yang lalu
+              </p>
+            </div>
+            <!-- Card lainnya duplikat -->
+            <div class="bg-white rounded-xl shadow p-4">
+              <img
+                src="makanan.png"
+                alt="Sop Ayam dan Sayur"
+                class="rounded-md mb-3"
+              />
+              <h3 class="font-semibold">Sop Ayam dan Sayur</h3>
+              <p class="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                <span>☕</span> 10 Porsi
+              </p>
+              <p class="text-sm text-gray-600 flex items-center gap-1">
+                <span>⏰</span> 30 menit yang lalu
+              </p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-4">
+              <img
+                src="makanan.png"
+                alt="Sop Ayam dan Sayur"
+                class="rounded-md mb-3"
+              />
+              <h3 class="font-semibold">Sop Ayam dan Sayur</h3>
+              <p class="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                <span>☕</span> 10 Porsi
+              </p>
+              <p class="text-sm text-gray-600 flex items-center gap-1">
+                <span>⏰</span> 30 menit yang lalu
+              </p>
+            </div>
+            <div class="bg-white rounded-xl shadow p-4">
+              <img
+                src="makanan.png"
+                alt="Sop Ayam dan Sayur"
+                class="rounded-md mb-3"
+              />
+              <h3 class="font-semibold">Sop Ayam dan Sayur</h3>
+              <p class="text-sm text-gray-600 flex items-center gap-1 mt-1">
+                <span>☕</span> 10 Porsi
+              </p>
+              <p class="text-sm text-gray-600 flex items-center gap-1">
+                <span>⏰</span> 30 menit yang lalu
+              </p>
+            </div>
+          </div>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

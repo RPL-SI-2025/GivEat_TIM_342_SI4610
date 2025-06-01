@@ -1,5 +1,5 @@
 <x-app-layout>
-    <main class="container">
+    <main class="container p-5">
         <!-- Banner -->
         <div class="banner-container mb-5">
             <img src="{{ asset('images/banner/banner.png') }}" alt="Banner" class="banner-image" />
@@ -8,8 +8,7 @@
         <!-- Top Restaurants -->
         <div class="top-restaurants mb-5">
             <div class="header d-flex justify-content-between align-items-center">
-                <h1 class="text-3xl font-bold"><b>Top Restaurant</b></h1>
-                <a href="#" class="view-more text-secondary">Lihat Selengkapnya</a>
+                <h1 class="text-2xl font-bold"><b>Top Restaurant</b></h1>
             </div>
             <div class="scroll-container-wrapper">
                 <div class="scroll-container">
@@ -32,11 +31,11 @@
         <!-- Siap Makan Hari Ini -->
         <div class="siap-makan">
             <div class="header d-flex justify-content-between align-items-center mb-4">
-                <h1 class="text-3xl font-bold"><b>Siap Makan Hari Ini</b></h1>
-                <a href="#" class="view-more text-secondary">Lihat Selengkapnya</a>
+                <h1 class="text-2xl font-bold"><b>Siap Makan Hari Ini</b></h1>
+                <a href="{{ route('foods.available') }}" class="view-more text-secondary">Lihat Selengkapnya</a>
             </div>
             <div class="grid-foods">
-                @foreach ($availableDonations as $donation)
+                @foreach ($availableDonations->take(8) as $donation)
                     <div class="food-card">
                         <div class="food-image-container">
                             <div class="tersisa-badge">Tersisa {{ $donation->portion }}</div>
@@ -48,29 +47,51 @@
                             <h3 class="food-name">{{ $donation->name }}</h3>
                             <div class="food-details">
                                 <div class="meta-info">
-                                    <div class="time">
-                                        <i class="bi bi-clock me-2"></i>
-                                        {{ \Carbon\Carbon::parse($donation->pickup_time)->format('H:i') }} Left
-                                    </div>
-                                    <div class="portion">
+                                <div class="portion">
                                         <i class="bi bi-cup-hot me-2"></i>
                                         {{ $donation->portion }} Porsi
                                     </div>
+                                    <div class="time" id="timer-{{ $donation->id }}" data-pickup-time="{{ $donation->pickup_time }}">
+                                        <i class="bi bi-clock me-2"></i>
+                                        <span>{{ $donation->pickup_time ? \Carbon\Carbon::parse($donation->pickup_time)->diffForHumans() : '' }}</span>
+                                    </div>
                                 </div>
-                                <a href="" 
-                                   class="btn btn-primary w-100 mt-3">
+                                <a href="{{ route('claim.food', $donation->id) }}" 
+                                   class="btn btn-primary w-100 mt-3 pick-hover">
                                     <i class="bi bi-cart-plus me-2"></i>Ambil
-                                </a>
+                                </a> 
                             </div>
                         </div>
                     </div>
                 @endforeach
             </div>
         </div>
+        <div class="news-card">
+                    <div class="header d-flex justify-content-between align-items-center mb-4 mt-5">
+                <h1 class="text-2xl font-bold"><b>Ada Apa Hari Ini</b></h1>
+                <a href="{{ route('berita.index') }}" class="view-more text-secondary">Lihat Selengkapnya</a>
+            </div>
+            <a href="{{ route('berita.index') }}">
+                <img src="{{ asset('images/news.png') }}" alt="News 1" class="news-image" />
+            </a>
+                    </div>
     </main>
-    <br><br><br><br>
-
     <style>
+        pick-hover:hover, pick-hover:focus {
+            background-color: #003F21 !important;
+            color: #fff !important;
+            border-color: #003F21 !important;
+            filter: none !important;
+            box-shadow: none !important;
+        }
+
+        /* News Image */
+        .news-image {
+            width: 100%;
+            border-radius: 10px; /* Optional: to match banner style */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Optional: to match banner style */
+        }
+
         /* Banner */
         .banner-container img {
             width: 100%;
@@ -190,7 +211,7 @@
         /* Button "Lihat Selengkapnya" */
         .view-more {
             font-size: 0.9rem;
-            font-weight: bold;
+            font-weight: regular;
             color: #FF6F61;
             text-decoration: none;
         }
@@ -209,13 +230,20 @@
             }
         }
     </style>
-</x-app-layout>
+    <style>
+        .grid-foods {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 24px;
+        }
 
-<style>
-    .grid-foods {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-        gap: 24px;
+        .food-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+            gap: 24px;
     }
 
     .food-card {
@@ -234,11 +262,10 @@
     .tersisa-badge {
         position: absolute;
         top: 12px;
-        left: 12px;
         background: #FF4B4B;
         color: white;
         padding: 4px 12px;
-        border-radius: 20px;
+        border-radius: 0px 20px 20px 0px;
         font-size: 14px;
         font-weight: 500;
         z-index: 1;
@@ -297,3 +324,4 @@
         color: #005229;
     }
 </style>
+</x-app-layout>
