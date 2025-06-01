@@ -12,7 +12,7 @@ use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use Carbon\Carbon;
 
-class TambahDonasiTest extends DuskTestCase
+class DonationPositiveTest extends DuskTestCase
 {
     /**
      * Contoh uji coba Dusk.
@@ -54,7 +54,7 @@ class TambahDonasiTest extends DuskTestCase
                 // Pastikan pesan sukses muncul setelah pengiriman
                 ->assertSee('Donasi berhasil ditambahkan');
         });
-    }
+    } 
 /**
      * A Dusk test example.
      * @group positivedonasi
